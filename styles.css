@@ -1,0 +1,7 @@
+body {
+  margin: 0;
+}
+
+@keyframes play {
+  100% { background-position: -17696px; }
+}
