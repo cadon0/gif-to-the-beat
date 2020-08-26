@@ -32,7 +32,13 @@ class CatJam extends Component {
     setInterval(() => {
       fetch("./config.json")
         .then((response) => response.json())
-        .then((json) => this.setState({ newBpm: json.bpm || newBpm }));
+        .then((json) => {
+          // Use default speed if the BPM is more than just a single number,
+          // e.g. a range "159-194 (194)"
+          this.setState({
+            newBpm: isNaN(json.bpm) ? bpm : json.bpm,
+          });
+        });
     }, 1000);
   }
 
