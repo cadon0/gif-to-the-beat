@@ -32,7 +32,7 @@ class CatJam extends Component {
     setInterval(() => {
       fetch("./config.json")
         .then((response) => response.json())
-        .then((json) => this.setState({ newBpm: json.bpm }));
+        .then((json) => this.setState({ newBpm: json.bpm || newBpm }));
     }, 1000);
   }
 

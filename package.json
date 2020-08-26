@@ -4,8 +4,7 @@
   "description": "Gif speeder-upper. Or slower-downer... A \"plugin\" for OBS.",
   "main": "main.js",
   "scripts": {
-    "start": "serve",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "serve"
   },
   "repository": {
     "type": "git",
