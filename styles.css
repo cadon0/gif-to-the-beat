@@ -3,5 +3,7 @@ body {
 }
 
 @keyframes play {
-  100% { background-position: -17696px; }
+  100% {
+    background-position: -17696px;
+  }
 }
