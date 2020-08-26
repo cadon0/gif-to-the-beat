@@ -1,8 +1,12 @@
-import { html, Component, render } from 'https://unpkg.com/htm/preact/standalone.module.js';
+import {
+  html,
+  Component,
+  render,
+} from "https://unpkg.com/htm/preact/standalone.module.js";
 
 // The location of the gif in sprite sheet form,
 // either a URL or a file path within this directory
-const spritesheetLocation = './catjam-spritesheet.png';
+const spritesheetLocation = "./catjam-spritesheet.png";
 // Dimensions of the original gif
 const width = 112;
 const height = 112;
@@ -20,27 +24,29 @@ class CatJam extends Component {
   constructor() {
     super();
     this.state = {
-      newBpm: bpm
-    }
+      newBpm: bpm,
+    };
   }
 
-	componentDidMount() {
+  componentDidMount() {
     setInterval(() => {
       fetch("./config.json")
-        .then(response => response.json())
-        .then(json => this.setState({ newBpm: json.bpm }));
-    }, 1000)
+        .then((response) => response.json())
+        .then((json) => this.setState({ newBpm: json.bpm }));
+    }, 1000);
   }
 
-	render() {
-    const newSeconds = seconds * bpm / this.state.newBpm;
-		return html`<div style="
+  render() {
+    const newSeconds = (seconds * bpm) / this.state.newBpm;
+    return html`<div
+      style="
         width: ${width}px;
         height: ${height}px;
         background: url(${spritesheetLocation}) left center;
         animation: play ${newSeconds}s steps(${frames}) infinite;
-      "></div>`;
-	}
+      "
+    ></div>`;
+  }
 }
 
 render(html`<${CatJam} />`, document.body);

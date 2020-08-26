@@ -1,0 +1,38 @@
+{
+  "name": "bpm-adjusted-gif",
+  "version": "1.0.0",
+  "description": "Gif speeder-upper. Or slower-downer... A \"plugin\" for OBS.",
+  "main": "main.js",
+  "scripts": {
+    "start": "serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cadon0/bpm-adjusted-gif.git"
+  },
+  "author": "cadon0",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cadon0/bpm-adjusted-gif/issues"
+  },
+  "homepage": "https://github.com/cadon0/bpm-adjusted-gif#readme",
+  "dependencies": {
+    "serve": "^11.3.2"
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.13",
+    "prettier": "^2.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write"
+    ]
+  }
+}
