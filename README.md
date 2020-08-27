@@ -24,7 +24,7 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
 Currently requires [StreamCompanion](https://github.com/Piotrekol/StreamCompanion)
 
 - Open StreamCompanion's settings to the "Output patterns" tab
-- Add a new entry and name it `bpm` and set the formatting to `!bpm!`
+- Add a new entry and name it `bpm` and set the formatting to `!mainbpm!`
 - Set "Save event" to `All`, or whichever configuration you prefer
 - Click "Save"!
 - From the root directory of this project run `node watchBpmFile.js`

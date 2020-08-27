@@ -28,26 +28,14 @@ class CatJam extends Component {
     };
   }
 
-  getBpm = (bpmString) => {
-    // Just a number
-    if (!isNaN(bpmString)) return Number(bpmString);
-    // Otherwise should be a range formatted like "180-210 (200)",
-    // so take the bracketed BPM - indicates most common
-    const match = bpmString.match(/\((\d+)\)/);
-    if (match) return Number(match[1]);
-
-    // Default to base BPM if whack
-    console.error(`Unexpected BPM format ${bpmString}}`);
-    return bpm;
-  };
-
   componentDidMount() {
     setInterval(() => {
       fetch("./config.json")
         .then((response) => response.json())
         .then((config) =>
           this.setState({
-            newBpm: getBpm(config.bpm),
+            // Fall back to original BPM if value isn't a number
+            newBpm: !isNaN(config.bpm) ? config.bpm : bpm,
           })
         );
     }, 1000);
