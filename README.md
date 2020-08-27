@@ -3,6 +3,8 @@
 Or slower-downer...
 Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com/).
 
+[Video demonstration](https://www.youtube.com/watch?v=KW616nsW86k&feature=youtu.be)
+
 ## Requirements:
 
 - [Node.js](https://nodejs.org/en/download/) must be installed
