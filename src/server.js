@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 
+console.log("Starting up server...");
+
 const app = express();
 
 app.use(express.static(path.join(__dirname, "./scripts")));
@@ -12,4 +14,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./index.html"));
 });
 
-app.listen(727);
+const port = 727;
+app.listen(port, () =>
+  console.log(`Now hosting a website on http://localhost:${port} :-)`)
+);
