@@ -4,20 +4,20 @@
   "description": "Gif speeder-upper. Or slower-downer... A \"plugin\" for OBS.",
   "main": "main.js",
   "scripts": {
-    "start": "serve"
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cadon0/bpm-adjusted-gif.git"
   },
-  "author": "cadon0",
+  "author": "Caleb Donnelly",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cadon0/bpm-adjusted-gif/issues"
   },
   "homepage": "https://github.com/cadon0/bpm-adjusted-gif#readme",
   "dependencies": {
-    "serve": "^11.3.2"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "husky": "^4.2.5",
