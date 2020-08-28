@@ -1,3 +1,8 @@
+// =======================================================
+// Changing these settings requires reloading the website.
+// If using OBS, click "Refresh cache of the current page"
+// in the Browser source
+// =======================================================
 // Dimensions of the gif
 const width = 112;
 const height = 112;
@@ -10,6 +15,9 @@ const bpm = 124;
 // Approximate gif length
 const seconds = 6.3;
 
+// =======================================================
+// Changing these settings requires restarting the server
+// =======================================================
 // The path to a file to get BPM updates from,
 // it should only ever contain a single number
 const bpmFile = "C:\\Program Files (x86)\\StreamCompanion\\Files\\bpm.txt";

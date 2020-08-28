@@ -35,7 +35,7 @@ class CatJam extends Component {
           newBpm: config.bpm,
           isLoadingConfig: false,
         });
-        setInterval(this.getBpm, 1000);
+        if (config.bpmFile) setInterval(this.getBpm, 1000);
       })
       .catch((err) => {
         console.error(`Error loading config: ${err}`);
