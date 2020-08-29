@@ -13,7 +13,7 @@ const path = require("path");
  */
 getTimingPoints = (filePath, cb) => {
   fs.readFile(path.resolve(filePath), "utf-8", (err, fileContents) => {
-    if (err) console.error(`Error reading .osu file: ${filePath}`);
+    if (err) return console.error(`Error reading .osu file: ${filePath}`);
     const lines = fileContents.split(os.EOL);
     const fileFormatVersion = lines[0].match(/v(\d+)/)[1];
 

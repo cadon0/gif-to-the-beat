@@ -1,24 +1,21 @@
-// ==============================================================================
-//            Changing these settings requires reloading the website.
-// If using OBS, click "Refresh cache of the current page" in the Browser source
-// ==============================================================================
+// ============================================
+//     Changing settings requires a restart
+// ============================================
+
 // Dimensions of the gif
 const width = 112;
 const height = 112;
-const spritesheetWidth = 17696;
+const spritesheetWidth = 16016;
 // The number of frames in the spritesheet
 const frames = spritesheetWidth / width;
+// "BPM" of the gif
+const bpm = 136.8;
+// Gif length
+const seconds = 5.69;
 // The location of the gif in sprite sheet form,
 // either a URL or a file within the images folder
 const spritesheetLocation = "./catjam-spritesheet.png";
-// "BPM" of the gif
-const bpm = 124;
-// Approximate gif length
-const seconds = 6.3;
 
-// ==============================================================================
-//             Changing these settings requires restarting the server
-// ==============================================================================
 // The port the server will run on
 const port = 727;
 // Whether you are running StreamCompanion for BPM updates or not

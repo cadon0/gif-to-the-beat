@@ -4,6 +4,7 @@ const path = require("path");
 const config = require("./config");
 const { runWebSocket } = require("./webSocket");
 const { getBpmFromFile } = require("./scripts/getBpmFromFile");
+const { bpmFile } = config;
 
 console.log("Starting up server...");
 
@@ -18,12 +19,11 @@ app.use(express.static(path.join(__dirname, "./styles")));
 app.use(express.static(path.join(__dirname, "./images")));
 
 app.get("/bpm", (req, res) => {
-  if (config.usingStreamCompanion) {
-    res.json(config.bpm);
-  } else {
+  if (!config.usingStreamCompanion && bpmFile) {
     const currentBpm = req.query.currentBpm;
-    res.json(getBpmFromFile(currentBpm, config.bpmFile, res));
+    return res.json(getBpmFromFile(currentBpm, bpmFile, res));
   }
+  return res.json(config.bpm);
 });
 
 app.get("/config", (req, res) => {
