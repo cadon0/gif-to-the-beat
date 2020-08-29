@@ -1,10 +1,15 @@
 const express = require("express");
 const path = require("path");
-const { getBpm } = require("./scripts/getBpmFromFile");
 
 const config = require("./config");
+const { runWebSocket } = require("./webSocket");
+const { getBpmFromFile } = require("./scripts/getBpmFromFile");
 
 console.log("Starting up server...");
+
+if (config.usingStreamCompanion) {
+  runWebSocket(config);
+}
 
 const app = express();
 
@@ -13,8 +18,12 @@ app.use(express.static(path.join(__dirname, "./styles")));
 app.use(express.static(path.join(__dirname, "./images")));
 
 app.get("/bpm", (req, res) => {
-  const currentBpm = req.query.currentBpm;
-  res.json(getBpm(currentBpm, config, res));
+  if (config.usingStreamCompanion) {
+    res.json(config.bpm);
+  } else {
+    const currentBpm = req.query.currentBpm;
+    res.json(getBpmFromFile(currentBpm, config.bpmFile, res));
+  }
 });
 
 app.get("/config", (req, res) => {

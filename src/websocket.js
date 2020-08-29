@@ -1,26 +1,43 @@
 const WebSocket = require("ws");
+const { getTimingPoints } = require("./scripts/updateTimingPoints");
 
-(openConnection = () => {
+runWebSocket = (config) => {
   console.log("Connecting to osu! update feed...");
   const ws = new WebSocket("ws://localhost:80/StreamCompanion/MapData/Stream");
 
-  ws.onopen = function () {
+  ws.onopen = () => {
     console.log("Connected to osu! update feed");
     setInterval(() => ws.ping(), 30000);
   };
 
-  ws.onmessage = function (e) {
-    console.log(e.data);
+  ws.onmessage = (message) => {
+    const data = JSON.parse(message.data);
+    console.log(data);
+    const [
+      status,
+      bpm,
+      mods,
+      localTimestamp,
+      songTimestamp,
+    ] = data.catjam.split(",");
+    config.bpm = bpm;
+
+    getTimingPoints(data.osuFile, (timingPoints) => {
+      config.timingPoints = timingPoints;
+    });
   };
 
-  ws.onclose = function () {
+  ws.onclose = () => {
+    const seconds = 5;
     console.log(
-      "Disconnected from osu! update feed, reconnecting in 5 seconds"
+      `Disconnected from osu! update feed, reconnecting in ${seconds} seconds`
     );
     setTimeout(() => {
-      openConnection();
-    }, 5000);
+      runWebSocket(config);
+    }, seconds * 1000);
   };
 
   ws.onerror = () => {};
-})();
+};
+
+module.exports = { runWebSocket };

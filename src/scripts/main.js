@@ -12,6 +12,22 @@ class CatJam extends Component {
     };
   }
 
+  loadConfig = () => {
+    fetch("/config")
+      .then((response) => response.json())
+      .then((config) => {
+        this.setState({
+          config,
+          newBpm: config.bpm,
+          isLoadingConfig: false,
+        });
+        if (config.bpmFile) setInterval(this.getBpm, 1000);
+      })
+      .catch((err) => {
+        console.error(`Error loading config: ${err}`);
+      });
+  };
+
   getBpm = () => {
     fetch(`/bpm?currentBpm=${this.state.newBpm}`)
       .then((response) => response.json())
@@ -27,19 +43,7 @@ class CatJam extends Component {
   };
 
   componentDidMount() {
-    fetch("/config")
-      .then((response) => response.json())
-      .then((config) => {
-        this.setState({
-          config,
-          newBpm: config.bpm,
-          isLoadingConfig: false,
-        });
-        if (config.bpmFile) setInterval(this.getBpm, 1000);
-      })
-      .catch((err) => {
-        console.error(`Error loading config: ${err}`);
-      });
+    this.loadConfig();
   }
 
   render() {
@@ -53,6 +57,9 @@ class CatJam extends Component {
       spritesheetLocation,
       frames,
     } = this.state.config;
+    // StreamCompanion saves map info on startup and doesn't
+    // watch for new additions
+    if (bpm == 0) return;
     const newSeconds = (seconds * bpm) / this.state.newBpm;
 
     return html`<div
