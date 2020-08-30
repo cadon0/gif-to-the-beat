@@ -13,17 +13,13 @@ runWebSocket = (config) => {
   ws.onmessage = (message) => {
     const data = JSON.parse(message.data);
     console.log(data);
-    const [
-      status,
-      bpm,
-      mods,
-      localTimestamp,
-      songTimestamp,
-    ] = data.catjam.split(",");
-    config.bpm = bpm;
+    const [bpm, mods] = data.bpmInfo.split(",");
 
     getTimingPoints(data.osuFile, (timingPoints) => {
+      config.bpm = bpm;
+      config.mods = mods;
       config.timingPoints = timingPoints;
+      config.lastUpdate = new Date().toISOString();
     });
   };
 
