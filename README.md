@@ -1,13 +1,15 @@
-# Gif speeder-upper
+# gif-to-the-beat
 
-Or slower-downer...
-Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com/).
+Listens to stats on the song currently playing in osu! and syncs a gif to the beat
+
+Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com/)
 
 [Video demonstration](https://www.youtube.com/watch?v=KW616nsW86k&feature=youtu.be)
 
 ## Requirements:
 
-- [Node.js](https://nodejs.org/en/download/) must be installed
+- [Node.js](https://nodejs.org/en/download/)
+- [StreamCompanion](https://github.com/Piotrekol/StreamCompanion)
 
 ## How to use:
 
@@ -15,31 +17,35 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
 - Double-click `start.bat`. It'll say when it's ready
 - Add a "Browser" source in OBS and enter the URL `http://localhost:727/`
   - Navigating to the URL in a browser is also an option
-  - The port number can be changed in [config.js](./src/config.js) (requires server restart)
+  - The port number can be changed in [config.js](./src/config.js)
 
 > IMPORTANT: Next time, if OBS is opened _before/without_ starting the server first, the gif may not display.
 > Please open the Browser source once you have started the server and click "Refresh cache of the current page"
 
 ### Integration with osu!
 
-Currently requires [StreamCompanion](https://github.com/Piotrekol/StreamCompanion)
-
 - Open StreamCompanion's settings to the "Output patterns" tab
-- Add a new entry and name it `bpm` and set the formatting to `!mainbpm!`
-- Set the "Save event" dropdown to `All`, or whichever configuration you prefer
+- Add three entries, name them:
+  - `liveInfo` with formatting `!status!,!localtime!,!time!`
+  - `bpmInfo` with formatting `!mainbpm!,!mods!`
+  - `osuFile` with formatting `!osufilelocation!`
+- For each entry set the "Save event" dropdown to `All`
+- Check "Enable WebSocketServer output of patterns"
 - Click "Save"!
-- Update `bpmFile` in [config.js](./src/config.js)
-  - The "General" tab of StreamCompanion's settings has an "Open" button to easily find the location
+
+![image](https://user-images.githubusercontent.com/25311843/91656816-f2dfa000-eb0f-11ea-99aa-294c7a2dd7eb.png)
 
 ## Missing features:
 
+- Syncing the gif to the song
 - osu! integration without StreamCompanion
-- Syncing the gif to the song (if possible)
-- Detecting music paused/stopped
 - Ability to accept a gif instead of requiring an outside sprite sheet conversion
 - GUI
 
 ## How do I adjust the speed of my own gif?
+
+> WARNING: If a gif has an uneven cycle time for each "beat" it will likely get out of sync with the music.
+> For example, certain frames of the CatJam gif had to be removed. You can edit the frames of a gif [here](https://ezgif.com/maker) (upload then select the "frames" button)
 
 - Take your gif and [generate a sprite sheet](https://ezgif.com/gif-to-sprite)
   - Check the "Stack horizontally" box, the sprites should be in a single line from left to right
@@ -48,5 +54,5 @@ Currently requires [StreamCompanion](https://github.com/Piotrekol/StreamCompanio
   - height
   - spritesheetWidth
   - spritesheetLocation
-  - bpm - you can tap along to each "beat" of the gif at [this website](https://www.all8.com/tools/bpm.htm)
-  - seconds - a stopwatch works fine
+  - originalBpm - you can tap along to each "beat" of the gif at [this website](https://www.all8.com/tools/bpm.htm)
+  - seconds - you can time it with a stopwatch, gifs don't tend to tell you their length
