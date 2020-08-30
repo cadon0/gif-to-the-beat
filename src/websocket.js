@@ -15,7 +15,7 @@ runWebSocket = (config) => {
     console.log(data);
     const [bpm, mods] = data.bpmInfo.split(",");
 
-    getTimingPoints(data.osuFile, (timingPoints) => {
+    getTimingPoints(data.osuFile).then((timingPoints) => {
       config.bpm = bpm;
       config.mods = mods;
       config.timingPoints = timingPoints;
