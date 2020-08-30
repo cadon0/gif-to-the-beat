@@ -1,1 +1,1 @@
-npm ci & cls & npm start & pause
+npm ci & npm start
