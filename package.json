@@ -4,7 +4,8 @@
   "description": "Gif speeder-upper. Or slower-downer... A \"plugin\" for OBS.",
   "main": "main.js",
   "scripts": {
-    "start": "node src/server.js"
+    "build": "webpack",
+    "start": "npm run build && node src/server.js"
   },
   "repository": {
     "type": "git",
@@ -18,12 +19,22 @@
   "homepage": "https://github.com/cadon0/bpm-adjusted-gif#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "ws": "^7.3.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
+    "babel": "^6.23.0",
+    "babel-loader": "^8.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.13",
-    "prettier": "^2.1.1"
+    "prettier": "^2.1.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
   },
   "husky": {
     "hooks": {
