@@ -73,9 +73,12 @@ class CatJam extends React.Component {
       );
     }
 
-    const doubleTimeActive =
-      status === "Playing" && mods.find((mod) => mod === "DT" || mod === "NC");
-    if (doubleTimeActive) bpm *= 1.5;
+    if (status === "Playing") {
+      const doubleTimeActive = mods.find((mod) => mod === "DT" || mod === "NC");
+      if (doubleTimeActive) bpm *= 1.5;
+      const halfTimeActive = mods.find((mod) => mod === "HT");
+      if (halfTimeActive) bpm *= 0.75;
+    }
 
     const newSeconds = (seconds * originalBpm) / bpm;
 
