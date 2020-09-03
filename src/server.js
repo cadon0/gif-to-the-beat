@@ -10,7 +10,7 @@ runWebSocket(config);
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, "./scripts")));
+app.use(express.static(path.join(__dirname, "../dist")));
 app.use(express.static(path.join(__dirname, "./styles")));
 app.use(express.static(path.join(__dirname, "./images")));
 

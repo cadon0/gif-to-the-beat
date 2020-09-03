@@ -1,12 +1,10 @@
-import {
-  html,
-  Component,
-  render,
-} from "https://unpkg.com/htm/preact/standalone.module.js";
+import React from "react";
+import ReactDOM from "react-dom";
 
-class CatJam extends Component {
+class CatJam extends React.Component {
   constructor() {
     super();
+    this.state = {};
   }
 
   loadConfig = () => {
@@ -27,7 +25,7 @@ class CatJam extends Component {
   }
 
   render() {
-    if (!this.state.config) return;
+    if (!this.state.config) return null;
 
     const {
       seconds,
@@ -46,15 +44,17 @@ class CatJam extends Component {
     const frames = spritesheetWidth / width;
     const newSeconds = (seconds * originalBpm) / bpm;
 
-    return html`<div
-      style="
-        width: ${width}px;
-        height: ${height}px;
-        background: url(${spritesheetLocation}) left center;
-        animation: play ${newSeconds}s steps(${frames}) infinite;
-      "
-    ></div>`;
+    return (
+      <div
+        style={{
+          width: `${width}px`,
+          height: `${height}px`,
+          background: `url(${spritesheetLocation}) left center`,
+          animation: `play ${newSeconds}s steps(${frames}) infinite`,
+        }}
+      ></div>
+    );
   }
 }
 
-render(html`<${CatJam} />`, document.body);
+ReactDOM.render(<CatJam />, document.getElementById("app"));
