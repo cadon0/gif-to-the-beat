@@ -15,10 +15,9 @@ runLiveDataWebSocket = (config) => {
     const data = JSON.parse(message.data);
     // This feed updates ~10 times per second
     if (debug) console.log(data);
-    const [status, localTime, mapTime] = data.liveInfo.split(",");
+    const [status, mapTime] = data.liveInfo.split(",");
 
     config.status = status;
-    config.localTime = localTime;
     config.mapTime = mapTime;
   };
 

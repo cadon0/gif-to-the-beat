@@ -7,9 +7,6 @@ const { runLiveDataWebSocket } = require("./liveDataWebSocket");
 
 console.log("Starting up server...");
 
-runMapDataWebSocket(config);
-runLiveDataWebSocket(config);
-
 const app = express();
 
 app.use(express.static(path.join(__dirname, "../dist")));
@@ -25,6 +22,11 @@ app.get("/", (req, res) => {
 });
 
 const port = config.port;
-app.listen(port, () =>
-  console.log(`Now hosting a website on http://localhost:${port} :-)`)
-);
+app.listen(port, () => {
+  console.log(`
+========================================================================
+          Now hosting a website on http://localhost:${port} :-)
+========================================================================`);
+  runMapDataWebSocket(config);
+  runLiveDataWebSocket(config);
+});

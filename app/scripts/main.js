@@ -25,10 +25,26 @@ class CatJam extends React.Component {
     )}`;
     if (updateString === this.lastUpdateString) return;
 
-    this.setState({
-      config,
-    });
+    // Sync to song
+    let delay = 0;
+    if (timingPoints) {
+      const { mapTime } = config;
+      // Assuming 40ms delay from snapshot of map time until now
+      const mapTimeInMs = mapTime / 1000 + 40;
+      const beatLength = timingPoints[0].split(",")[1];
+      const msToNextBeat = beatLength - (mapTimeInMs % beatLength);
+      delay = msToNextBeat;
+    }
+
     this.lastUpdateString = updateString;
+    setTimeout(
+      () =>
+        this.setState({
+          config,
+        }),
+      // Assuming approx. 250ms delay between setTimeout and render
+      delay - 250
+    );
   };
 
   loadConfig = () => {
@@ -53,7 +69,7 @@ class CatJam extends React.Component {
     if (bpm == 0) {
       bpm = originalBpm;
       console.error(
-        "StreamCompanion doesn't detect newly added maps, using default bpm"
+        "StreamCompanion doesn't detect maps added in the osu! session, using default bpm"
       );
     }
 

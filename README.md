@@ -13,11 +13,11 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
 
 ## How to use:
 
-- Clone or download a copy of this project
+- Download a copy of this project (or clone it)
 - Double-click `start.bat`. It'll say when it's ready
 - Add a "Browser" source in OBS and enter the URL `http://localhost:727/`
   - Navigating to the URL in a browser is also an option
-  - The port number can be changed in [config.js](./src/config.js)
+  - The port number can be changed in [config.js](./src/config.js) (if in doubt open with Notepad++)
 
 > IMPORTANT: Next time, if OBS is opened _before/without_ starting the server first, the gif may not display.
 > Please open the Browser source once you have started the server and click "Refresh cache of the current page"
@@ -26,7 +26,7 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
 
 - Open StreamCompanion's settings to the "Output patterns" tab
 - Add three entries, name them:
-  - `liveInfo` with formatting `!status!,!localtime!,!time!`
+  - `liveInfo` with formatting `!status!,!time!`
   - `bpmInfo` with formatting `!mainbpm!,!mods!`
   - `osuFile` with formatting `!osufilelocation!`
 - For each entry set the "Save event" dropdown to `All`
@@ -37,9 +37,9 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
 
 ## Missing features:
 
-- Syncing the gif to the song
+- Detect music paused, looped, etc.
 - osu! integration without StreamCompanion
-- Ability to accept a gif instead of requiring an outside sprite sheet conversion
+- Ability to accept a gif instead of requiring a manual sprite sheet conversion
 - GUI
 
 ## How do I adjust the speed of my own gif?
@@ -49,7 +49,7 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
 
 - Take your gif and [generate a sprite sheet](https://ezgif.com/gif-to-sprite)
   - Check the "Stack horizontally" box, the sprites should be in a single line from left to right
-- In [config.js](./src/config.js) update:
+- In [config.js](./server/config.js) update:
   - width
   - height
   - spritesheetWidth
