@@ -7,14 +7,22 @@ class CatJam extends React.Component {
     this.state = {};
   }
 
+  handleConfig = (config) => {
+    const { bpm, mods, timingPoints } = config;
+    // Only update if these things changed
+    const updateString = `${bpm}${mods}${JSON.stringify(timingPoints)}`;
+    if (updateString === this.lastUpdateString) return;
+
+    this.setState({
+      config,
+    });
+    this.lastUpdateString = updateString;
+  };
+
   loadConfig = () => {
     fetch("/config")
       .then((response) => response.json())
-      .then((config) => {
-        this.setState({
-          config,
-        });
-      })
+      .then(this.handleConfig)
       .catch((err) => {
         console.error(`Error loading config: ${err}`);
       });
@@ -30,16 +38,19 @@ class CatJam extends React.Component {
     const {
       seconds,
       originalBpm,
-      bpm,
+      mods,
       width,
       height,
       spritesheetWidth,
       spritesheetLocation,
     } = this.state.config;
+    let { bpm } = this.state.config;
 
     // StreamCompanion saves map info on startup and doesn't
     // watch for new additions, resulting in it saying "0"
     if (bpm == 0) return;
+    // TODO: When status available, only multiply if status is "Playing"
+    if (mods.find((mod) => mod === "DT" || mod === "NC")) bpm *= 1.5;
 
     const frames = spritesheetWidth / width;
     const newSeconds = (seconds * originalBpm) / bpm;
