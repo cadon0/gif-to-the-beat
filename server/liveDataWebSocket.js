@@ -1,8 +1,9 @@
 const WebSocket = require("ws");
 
-const name = "MapData";
+const name = "LiveData";
+const debug = false;
 
-runMapDataWebSocket = (config) => {
+runLiveDataWebSocket = (config) => {
   console.log(`Connecting to osu! ${name} update feed...`);
   const ws = new WebSocket(`ws://localhost:80/StreamCompanion/${name}/Stream`);
 
@@ -12,23 +13,21 @@ runMapDataWebSocket = (config) => {
 
   ws.onmessage = (message) => {
     const data = JSON.parse(message.data);
-    console.log(data);
-    const [bpm, ...mods] = data.bpmInfo.split(",");
+    // This feed updates ~10 times per second
+    if (debug) console.log(data);
+    const [status, localTime, mapTime] = data.liveInfo.split(",");
 
-    getTimingPoints(data.osuFile).then((timingPoints) => {
-      config.bpm = bpm;
-      config.mods = mods;
-      config.timingPoints = timingPoints;
-      config.lastUpdate = new Date().toISOString();
-    });
+    config.status = status;
+    config.localTime = localTime;
+    config.mapTime = mapTime;
   };
 
   ws.onclose = () => {
     console.log(`Disconnected from osu! ${name} update feed, reconnecting...`);
-    runWebSocket(config);
+    runLiveDataWebSocket(config);
   };
 
   ws.onerror = () => {};
 };
 
-module.exports = { runMapDataWebSocket };
+module.exports = { runLiveDataWebSocket };

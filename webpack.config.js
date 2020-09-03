@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./src/scripts/main",
+  entry: "./app/scripts/main",
   mode: "development",
   devtool: "source-map",
   module: {

@@ -1,16 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import config from "../../server/config";
+
+const { width, height, spritesheetWidth, spritesheetLocation } = config;
+const frames = spritesheetWidth / width;
+
 class CatJam extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      config: {
+        ...config,
+        mods: [],
+      },
+    };
   }
 
   handleConfig = (config) => {
-    const { bpm, mods, timingPoints } = config;
+    const { bpm, mods, timingPoints, status } = config;
     // Only update if these things changed
-    const updateString = `${bpm}${mods}${JSON.stringify(timingPoints)}`;
+    const updateString = `${bpm}${mods}${status}${JSON.stringify(
+      timingPoints
+    )}`;
     if (updateString === this.lastUpdateString) return;
 
     this.setState({
@@ -35,24 +47,20 @@ class CatJam extends React.Component {
   render() {
     if (!this.state.config) return null;
 
-    const {
-      seconds,
-      originalBpm,
-      mods,
-      width,
-      height,
-      spritesheetWidth,
-      spritesheetLocation,
-    } = this.state.config;
+    const { seconds, originalBpm, mods, status } = this.state.config;
     let { bpm } = this.state.config;
 
-    // StreamCompanion saves map info on startup and doesn't
-    // watch for new additions, resulting in it saying "0"
-    if (bpm == 0) return;
-    // TODO: When status available, only multiply if status is "Playing"
-    if (mods.find((mod) => mod === "DT" || mod === "NC")) bpm *= 1.5;
+    if (bpm == 0) {
+      bpm = originalBpm;
+      console.error(
+        "StreamCompanion doesn't detect newly added maps, using default bpm"
+      );
+    }
 
-    const frames = spritesheetWidth / width;
+    const doubleTimeActive =
+      status === "Playing" && mods.find((mod) => mod === "DT" || mod === "NC");
+    if (doubleTimeActive) bpm *= 1.5;
+
     const newSeconds = (seconds * originalBpm) / bpm;
 
     return (
