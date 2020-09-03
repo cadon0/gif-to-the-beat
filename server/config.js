@@ -23,6 +23,7 @@ module.exports = {
   spritesheetWidth,
   spritesheetLocation,
   originalBpm,
+  bpm: originalBpm,
   seconds,
   port,
 };
