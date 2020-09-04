@@ -86,10 +86,10 @@ class CatJam extends React.Component {
     let { bpm } = this.state.config;
 
     if (bpm == 0) {
-      bpm = originalBpm;
       console.error(
-        "StreamCompanion doesn't detect maps added in the osu! session, using default bpm"
+        "StreamCompanion doesn't detect the bpm of maps added in the osu! session, using default bpm"
       );
+      bpm = originalBpm;
     }
 
     if (status === "Playing") {

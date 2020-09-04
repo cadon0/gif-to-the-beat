@@ -11,7 +11,7 @@ const originalBpm = 136.8;
 // Length of the original gif
 const seconds = 5.69;
 // Milliseconds until the gif hits the first "beat"
-const offset = -20;
+const offset = -15;
 // The location of the gif in sprite sheet form,
 // either a URL or a file within the images folder
 const spritesheetLocation = "./catjam-spritesheet.png";
