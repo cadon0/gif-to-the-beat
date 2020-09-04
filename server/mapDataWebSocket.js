@@ -4,7 +4,6 @@ const { getTimingPoints } = require("./getTimingPoints");
 const name = "MapData";
 
 runMapDataWebSocket = (config) => {
-  console.log(`Connecting to osu! ${name} update feed...`);
   const ws = new WebSocket(`ws://localhost:80/StreamCompanion/${name}/Stream`);
 
   ws.onopen = () => {

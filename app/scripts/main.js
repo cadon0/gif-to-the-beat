@@ -1,9 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Tock from "tocktimer";
 
 import config from "../../server/config";
 
-const { width, height, spritesheetWidth, spritesheetLocation } = config;
+const {
+  width,
+  height,
+  spritesheetWidth,
+  seconds,
+  offset,
+  spritesheetLocation,
+} = config;
 const frames = spritesheetWidth / width;
 
 class CatJam extends React.Component {
@@ -18,33 +26,43 @@ class CatJam extends React.Component {
   }
 
   handleConfig = (config) => {
-    const { bpm, mods, timingPoints, status } = config;
-    // Only update if these things changed
+    const { bpm, mods, timingPoints, status, mapTime } = config;
+
+    // Wait until the song starts,
+    // starting the gif during loading would leave it out of sync
+    if (status === "Playing" && mapTime <= 0) return;
+
+    // Only re-load the gif if these things changed
     const updateString = `${bpm}${mods}${status}${JSON.stringify(
       timingPoints
     )}`;
     if (updateString === this.lastUpdateString) return;
+    this.lastUpdateString = updateString;
 
-    // Sync to song
+    // Calculate delay to get in sync with song
     let delay = 0;
     if (timingPoints) {
-      const { mapTime } = config;
-      // Assuming 40ms delay from snapshot of map time until now
-      const mapTimeInMs = mapTime / 1000 + 40;
+      const mapTimeInMs = mapTime / 1000;
       const beatLength = timingPoints[0].split(",")[1];
       const msToNextBeat = beatLength - (mapTimeInMs % beatLength);
       delay = msToNextBeat;
+      // Start the gif before the next beat by the offset
+      delay -= offset;
+      // If there's not enough time for that, wait until the next beat
+      if (delay < 0) delay += beatLength;
     }
 
-    this.lastUpdateString = updateString;
-    setTimeout(
-      () =>
+    const tockFriendlyDelay = Math.round(delay);
+    // Use Tock as setTimeout is not precise
+    var timer = Tock({
+      countdown: true,
+      complete: () => {
         this.setState({
           config,
-        }),
-      // Assuming approx. 250ms delay between setTimeout and render
-      delay - 250
-    );
+        });
+      },
+    });
+    timer.start(tockFriendlyDelay);
   };
 
   loadConfig = () => {
@@ -53,17 +71,18 @@ class CatJam extends React.Component {
       .then(this.handleConfig)
       .catch((err) => {
         console.error(`Error loading config: ${err}`);
+        console.error(`The config was: ${JSON.stringify(config)}`);
       });
   };
 
   componentDidMount() {
-    setInterval(this.loadConfig, 1000);
+    setInterval(this.loadConfig, 500);
   }
 
   render() {
     if (!this.state.config) return null;
 
-    const { seconds, originalBpm, mods, status } = this.state.config;
+    const { originalBpm, mods, status } = this.state.config;
     let { bpm } = this.state.config;
 
     if (bpm == 0) {

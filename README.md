@@ -37,7 +37,8 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
 
 ## Missing features:
 
-- Detect music paused, looped, etc.
+- Adjust at bpm changes mid-song
+- Detect song restarts
 - osu! integration without StreamCompanion
 - Ability to accept a gif instead of requiring a manual sprite sheet conversion
 - GUI
@@ -56,3 +57,5 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
   - spritesheetLocation
   - originalBpm - you can tap along to each "beat" of the gif at [this website](https://www.all8.com/tools/bpm.htm)
   - seconds - you can time it with a stopwatch, gifs don't tend to tell you their length
+  - offset - if the gif starts mid-cycle this is how you get it to sync
+    - Rearranging the frames of the gif so it starts on-beat can make this easier (see link in warning above, but drag & drop frames)
