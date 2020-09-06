@@ -87,7 +87,8 @@ class GifToTheBeat extends React.Component {
    * @param {Object} config
    */
   handleConfig = (config) => {
-    const { timingPoints, status, mapTime, osuFile } = config;
+    const { timingPoints, status, osuFile } = config;
+    const mapTime = Number(config.mapTime);
 
     const osuFileChanged = osuFile !== this.lastOsuFile;
     if (!osuFileChanged) {

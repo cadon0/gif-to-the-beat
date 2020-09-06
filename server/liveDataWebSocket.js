@@ -17,7 +17,7 @@ runLiveDataWebSocket = (config) => {
     const [status, mapTime, isoTime] = data.liveInfo.split(",");
 
     config.status = status;
-    config.mapTime = mapTime;
+    config.mapTime = Number(mapTime);
     config.isoTime = isoTime;
   };
 
