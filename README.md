@@ -9,24 +9,28 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
 ## Requirements:
 
 - [Node.js](https://nodejs.org/en/download/)
-- [StreamCompanion](https://github.com/Piotrekol/StreamCompanion)
+- [StreamCompanion](https://github.com/Piotrekol/StreamCompanion/releases) - please get [this version](https://github.com/Piotrekol/StreamCompanion/releases/tag/v200813.17) if the latest release does not work
+
+> IMPORTANT: StreamCompanion as of v200813.17 is currently missing a key feature for syncing.
+> You can manually patch it by downloading [this file](https://puu.sh/GpKpW/d05e1aa9ec.dll) and replacing the original in StreamCompanion's Plugin folder - e.g. `C:\Program Files (x86)\StreamCompanion\Plugins`
 
 ## How to use:
 
 - Download a copy of this project (or clone it)
 - Double-click `start.bat`. It'll say when it's ready
+  - A manual setup is running the commands `npm ci` & `npm start`
 - Add a "Browser" source in OBS and enter the URL `http://localhost:727/`
-  - Navigating to the URL in a browser is also an option
-  - The port number can be changed in [config.js](./src/config.js) (if in doubt open with Notepad++)
+  - This URL can also be opened in a browser, useful if you need to fiddle with offset values
+  - The port number can be changed in [config.js](./src/config.js) (if in doubt edit with notepad)
 
 > IMPORTANT: Next time, if OBS is opened _before/without_ starting the server first, the gif may not display.
-> Please open the Browser source once you have started the server and click "Refresh cache of the current page"
+> Please open the browser source settings once you have started the server and click "Refresh cache of the current page"
 
 ### Integration with osu!
 
 - Open StreamCompanion's settings to the "Output patterns" tab
 - Add three entries, name them:
-  - `liveInfo` with formatting `!status!,!time!`
+  - `liveInfo` with formatting `!status!,!time!,!isotime!`
   - `bpmInfo` with formatting `!mainbpm!,!mods!`
   - `osuFile` with formatting `!osufilelocation!`
 - For each entry set the "Save event" dropdown to `All`

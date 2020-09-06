@@ -24,14 +24,14 @@ function getTimingPoints(filePath) {
     fs.readFile(path.resolve(filePath), "utf-8", (err, fileContents) => {
       if (err) return reject(err);
 
-      const lines = fileContents.split(os.EOL);
+      const lines = fileContents.split(/\r?\n/g);
       const fileFormatVersion = lines[0].match(/v(\d+)/)[1];
 
       const firstTimingPointIndex = lines.indexOf("[TimingPoints]") + 1;
       let allTimingPoints;
       for (let i = firstTimingPointIndex; i < lines.length; i++) {
-        // All osu! file format versions separate sections with empty lines?
-        // Also checking for the start of a new section to be safe
+        // All osu! file format versions separate sections with empty lines,
+        // but also checking for the start of a new section to be safe
         if (lines[i].match(/^$/) || lines[i].startsWith("[")) {
           allTimingPoints = lines.slice(firstTimingPointIndex, i);
           break;

@@ -8,13 +8,14 @@ const {
   width,
   height,
   spritesheetWidth,
+  originalBpm,
   seconds,
   offset,
   spritesheetLocation,
 } = config;
 const frames = spritesheetWidth / width;
 
-class CatJam extends React.Component {
+class GifToTheBeat extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -23,46 +24,79 @@ class CatJam extends React.Component {
         mods: [],
       },
     };
+    this.timers = [];
   }
+
+  syncToSong = (config) => {
+    const { timingPoints, mapTime, isoTime } = config;
+    // Clear previous timers
+    this.timers.forEach((timer) => timer.stop());
+    this.timers = [];
+
+    // Calculate how far through the song is currently
+    const msSinceSnapshot = new Date() - new Date(isoTime);
+    const mapTimeInMs = mapTime * 1000 + msSinceSnapshot;
+
+    let lastTimerSet;
+    // Iterate through the timing points while setting timers
+    // which change the bpm once they've counted down.
+    // Reverse order allows ignoring any timing points that have already passed
+    timingPoints.reverse().forEach((timingPoint) => {
+      if (lastTimerSet) return;
+
+      const [timingPointOffset, beatLength] = timingPoint.split(",");
+      let msToNextBeat = timingPointOffset - mapTimeInMs;
+      if (msToNextBeat < 0) {
+        beatLength - (mapTimeInMs % beatLength);
+        lastTimerSet = true;
+      }
+
+      let delay = msToNextBeat;
+      // Start the gif before the next beat by the gif offset
+      delay -= offset;
+      // If there's not enough time for that, wait until the next beat
+      if (delay < 0) delay += beatLength;
+
+      // Use Tock as setTimeout is not precise
+      const timer = Tock({
+        countdown: true,
+        complete: () => {
+          this.setState({
+            config: { ...config, bpm: (60 / beatLength) * 1000 },
+          });
+        },
+      });
+      const tockFriendlyDelay = Math.round(delay);
+      timer.start(tockFriendlyDelay);
+      this.timers.push(timer);
+    });
+  };
 
   handleConfig = (config) => {
     const { bpm, mods, timingPoints, status, mapTime } = config;
-
-    // Wait until the song starts,
-    // starting the gif during loading would leave it out of sync
-    if (status === "Playing" && mapTime <= 0) return;
 
     // Only re-load the gif if these things changed
     const updateString = `${bpm}${mods}${status}${JSON.stringify(
       timingPoints
     )}`;
     if (updateString === this.lastUpdateString) return;
+
+    // If the status changed to "Playing" wait until the map time isn't 0
+    // since that would indicate loading has finished
+    // TODO: Handle map time switching to 0 slightly after status updated to "Playing"
+    if (status === "Playing" && mapTime === 0) return;
+
     this.lastUpdateString = updateString;
 
-    // Calculate delay to get in sync with song
-    let delay = 0;
-    if (timingPoints) {
-      const mapTimeInMs = mapTime / 1000;
-      const beatLength = timingPoints[0].split(",")[1];
-      const msToNextBeat = beatLength - (mapTimeInMs % beatLength);
-      delay = msToNextBeat;
-      // Start the gif before the next beat by the offset
-      delay -= offset;
-      // If there's not enough time for that, wait until the next beat
-      if (delay < 0) delay += beatLength;
-    }
+    // Editing offers slower playback which would currently be difficult to detect,
+    // and lots of pausing/rewinding. It's probably not worth trying to sync with
+    if (status === "Editing")
+      return this.setState({ config: { ...config, bpm: originalBpm } });
 
-    const tockFriendlyDelay = Math.round(delay);
-    // Use Tock as setTimeout is not precise
-    var timer = Tock({
-      countdown: true,
-      complete: () => {
-        this.setState({
-          config,
-        });
-      },
-    });
-    timer.start(tockFriendlyDelay);
+    // No timing points available for syncing to song
+    if (!timingPoints) return this.setState({ config });
+
+    this.syncToSong(config);
   };
 
   loadConfig = () => {
@@ -82,7 +116,7 @@ class CatJam extends React.Component {
   render() {
     if (!this.state.config) return null;
 
-    const { originalBpm, mods, status } = this.state.config;
+    const { mods, status } = this.state.config;
     let { bpm } = this.state.config;
 
     if (bpm == 0) {
@@ -114,4 +148,4 @@ class CatJam extends React.Component {
   }
 }
 
-ReactDOM.render(<CatJam />, document.getElementById("app"));
+ReactDOM.render(<GifToTheBeat />, document.getElementById("app"));

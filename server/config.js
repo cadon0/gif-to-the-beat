@@ -1,6 +1,8 @@
-// ============================================
-//     Changing settings requires a restart
-// ============================================
+// ==========================================================
+//     Changing settings requires a restart of the server
+//   Refreshing the browser source or any open browser tabs
+//       is also required after the restart is complete
+// ==========================================================
 
 // Dimensions of the gif
 const width = 112;
@@ -11,7 +13,7 @@ const originalBpm = 136.8;
 // Length of the original gif
 const seconds = 5.69;
 // Milliseconds until the gif hits the first "beat"
-const offset = -15;
+const offset = 0;
 // The location of the gif in sprite sheet form,
 // either a URL or a file within the images folder
 const spritesheetLocation = "./catjam-spritesheet.png";
