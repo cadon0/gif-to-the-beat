@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-chrome",
+      "request": "launch",
+      "name": "Debug in browser",
+      "url": "http://localhost:727",
+      "webRoot": "${workspaceFolder}"
+    }
+    // Debugging the server in VS Code: Ctrl+Shift+P and enter ">debug terminal"
+    // for the "Debug: Create JavaScript Debug Terminal" option
+  ]
+}
