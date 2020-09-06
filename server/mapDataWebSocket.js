@@ -14,12 +14,14 @@ runMapDataWebSocket = (config) => {
     const data = JSON.parse(message.data);
     console.log(data);
     const [bpm, ...mods] = data.bpmInfo.split(",");
+    const osuFile = data.osuFile;
 
-    getTimingPoints(data.osuFile).then((timingPoints) => {
+    getTimingPoints(osuFile).then((timingPoints) => {
       config.bpm = bpm;
       config.mods = mods;
       config.timingPoints = timingPoints;
       config.lastUpdate = new Date().toISOString();
+      config.osuFile = osuFile;
     });
   };
 

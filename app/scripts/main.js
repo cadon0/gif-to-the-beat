@@ -27,8 +27,15 @@ class GifToTheBeat extends React.Component {
     this.timers = [];
   }
 
+  /**
+   * Sets timers to sync the gif for the rest of the current songs duration.
+   * One for each time the bpm will change, and one almost immediately
+   *
+   * @param {Object} config
+   */
   syncToSong = (config) => {
     const { timingPoints, mapTime, isoTime } = config;
+
     // Clear previous timers
     this.timers.forEach((timer) => timer.stop());
     this.timers = [];
@@ -55,7 +62,7 @@ class GifToTheBeat extends React.Component {
       // Start the gif before the next beat by the gif offset
       delay -= offset;
       // If there's not enough time for that, wait until the next beat
-      if (delay < 0) delay += beatLength;
+      while (delay < 0) delay += beatLength;
 
       // Use Tock as setTimeout is not precise
       const timer = Tock({
@@ -72,21 +79,43 @@ class GifToTheBeat extends React.Component {
     });
   };
 
+  /**
+   * Handles the latest config from the server.
+   * It starts by returning early if there's no need to re-sync the gif
+   * to the song, so that the gif animation will not be interrupted
+   *
+   * @param {Object} config
+   */
   handleConfig = (config) => {
-    const { bpm, mods, timingPoints, status, mapTime } = config;
+    const { timingPoints, status, mapTime, osuFile } = config;
 
-    // Only re-load the gif if these things changed
-    const updateString = `${bpm}${mods}${status}${JSON.stringify(
-      timingPoints
-    )}`;
-    if (updateString === this.lastUpdateString) return;
+    const osuFileChanged = osuFile !== this.lastOsuFile;
+    if (!osuFileChanged) {
+      // Song is unchanged but many things can affect the time it's at
+      const mapTimeMovedBackward = mapTime < this.lastMapTime;
+      const mapTimeMovedAhead = mapTime - this.lastMapTime > 2000;
+      if (!mapTimeMovedBackward && !mapTimeMovedAhead) {
+        this.lastMapTime = mapTime;
+        return;
+      }
+    }
+    this.lastMapTime = mapTime;
 
-    // If the status changed to "Playing" wait until the map time isn't 0
-    // since that would indicate loading has finished
-    // TODO: Handle map time switching to 0 slightly after status updated to "Playing"
-    if (status === "Playing" && mapTime === 0) return;
+    if (status === "Playing") {
+      // Wait until the map time is past 0 since that would indicate loading has finished
+      if (mapTime <= 0) return;
+    } else if (status !== "Playing") {
+      // The LiveData socket can still be sending data for the previous song for a while after a change
+      if (!this.waitOneCycle) {
+        this.waitOneCycle = true;
+        return;
+      } else {
+        this.waitOneCycle = false;
+      }
+    }
 
-    this.lastUpdateString = updateString;
+    // Gif will be synced past this point
+    this.lastOsuFile = osuFile;
 
     // Editing offers slower playback which would currently be difficult to detect,
     // and lots of pausing/rewinding. It's probably not worth trying to sync with
@@ -94,7 +123,7 @@ class GifToTheBeat extends React.Component {
       return this.setState({ config: { ...config, bpm: originalBpm } });
 
     // No timing points available for syncing to song
-    if (!timingPoints) return this.setState({ config });
+    if (!timingPoints || !timingPoints.length) return this.setState({ config });
 
     this.syncToSong(config);
   };
@@ -137,6 +166,10 @@ class GifToTheBeat extends React.Component {
 
     return (
       <div
+        // If a song rewinds and the bpm is the same then the style values here will not change either.
+        // The gif needs to be redrawn to sync back to the song but React will not do that
+        // if the render content is unchanged. Using this key ensures the render content changes
+        key={this.state.config.mapTime}
         style={{
           width: `${width}px`,
           height: `${height}px`,
