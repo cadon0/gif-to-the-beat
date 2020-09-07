@@ -10,7 +10,7 @@ const {
   spritesheetWidth,
   originalBpm,
   seconds,
-  offset,
+  gifOffset,
   spritesheetLocation,
 } = config;
 const frames = spritesheetWidth / width;
@@ -52,17 +52,20 @@ class GifToTheBeat extends React.Component {
       if (lastTimerSet) return;
 
       const [timingPointOffset, beatLength] = timingPoint.split(",");
+      // Calculate how long until this timing point becomes active
       let msToNextBeat = timingPointOffset - mapTimeInMs;
+      // The gif should also start relative to this by its offset
+      msToNextBeat -= gifOffset;
       if (msToNextBeat < 0) {
-        beatLength - (mapTimeInMs % beatLength);
+        // Under 0 means that this timing point is active right now,
+        // so to sync the gif it simply needs to start at the next beat
+        const msSinceCurrentTimingPointStarted =
+          mapTimeInMs - timingPointOffset;
+        const msThroughCurrentBeat =
+          msSinceCurrentTimingPointStarted % beatLength;
+        msToNextBeat = beatLength - msThroughCurrentBeat;
         lastTimerSet = true;
       }
-
-      let delay = msToNextBeat;
-      // Start the gif before the next beat by the gif offset
-      delay -= offset;
-      // If there's not enough time for that, wait until the next beat
-      while (delay < 0) delay += beatLength;
 
       // Use Tock as setTimeout is not precise
       const timer = Tock({
@@ -73,7 +76,7 @@ class GifToTheBeat extends React.Component {
           });
         },
       });
-      const tockFriendlyDelay = Math.round(delay);
+      const tockFriendlyDelay = Math.round(msToNextBeat);
       timer.start(tockFriendlyDelay);
       this.timers.push(timer);
     });

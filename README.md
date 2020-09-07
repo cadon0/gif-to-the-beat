@@ -66,7 +66,7 @@ In [config.js](./server/config.js) update:
 - height
 - spritesheetWidth
 - spritesheetLocation
-- offset - if the gif is slightly out of sync with osu! in general or does not start on the "beat" this is how you get it to sync
+- gifOffset - if the gif is slightly out of sync with osu! in general or does not start on the "beat" this is how you get it to sync
   - Rearranging the frames of the gif so it starts on-beat can make this easier
     (again [upload here](https://ezgif.com/maker), click "frames", then rearrange)
 

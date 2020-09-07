@@ -9,12 +9,12 @@ const width = 112;
 const height = 112;
 const spritesheetWidth = 16016;
 // "BPM" of the Original gif
-const originalBpm = 136.36;
+const originalBpm = 136.3636;
 // Length of the original gif
 const seconds = 5.72;
-// Milliseconds until the gif hits the first "beat",
-// plus or minus any extra required
-const offset = 15;
+// Milliseconds until the gif hits the first "beat".
+// Increase to start earlier, decrease to start later
+const gifOffset = 15;
 // The location of the sprite sheet for the gif, either a URL
 // or the name of a file in the images folder with "./" in front
 const spritesheetLocation = "./catjam-spritesheet.png";
@@ -29,7 +29,7 @@ module.exports = {
   originalBpm,
   bpm: originalBpm,
   seconds,
-  offset,
+  gifOffset,
   spritesheetLocation,
   port,
 };
