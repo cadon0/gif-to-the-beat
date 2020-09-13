@@ -168,13 +168,12 @@ class GifToTheBeat extends React.Component {
 
     const newSeconds = (seconds * originalBpm) / bpm;
 
-    console.log(`rendering: ${gifName}${mapTime}`);
     return (
       <div
         // If a song rewinds and the bpm is the same then the style values here will not change either.
         // The gif needs to be redrawn to sync back to the song but React will not do that
         // if the render content is unchanged. Using this key ensures the render content changes
-        key={`${gifName}${mapTime}`}
+        key={mapTime}
         style={{
           width: `${width}px`,
           height: `${height}px`,

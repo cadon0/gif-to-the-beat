@@ -4,7 +4,7 @@ Listens to stats on what's playing in osu! and syncs a gif to the beat
 
 Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com/)
 
-[Demo](https://www.youtube.com/watch?v=KW616nsW86k&feature=youtu.be)
+[Demo](https://youtu.be/tGu67o-DhTE)
 
 ## Requirements:
 
