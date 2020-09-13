@@ -145,11 +145,11 @@ class GifToTheBeat extends React.Component {
       spritesheetLocation,
       seconds,
       originalBpm,
-      bpm,
       mods,
       status,
       mapTime,
     } = this.state.config;
+    let { bpm } = this.state.config;
     const frames = spritesheetWidth / width;
 
     if (bpm == 0) {

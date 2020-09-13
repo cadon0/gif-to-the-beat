@@ -7,7 +7,7 @@
 // The port the server will run on
 const port = 727;
 
-const gifDetails = [
+const gifConfigurations = [
   {
     // A name - used to match with URLs e.g. `http://localhost:727/catjam`
     gifName: "catjam",
@@ -39,6 +39,6 @@ const gifDetails = [
 ];
 
 module.exports = {
-  gifDetails,
+  gifConfigurations,
   port,
 };

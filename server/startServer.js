@@ -1,9 +1,12 @@
 const express = require("express");
 const path = require("path");
 
-const { gifDetails, port } = require("./config");
+const { writeCss } = require("./writeCss");
+const { gifConfigurations, port } = require("./config");
 const { runMapDataWebSocket } = require("./mapDataWebSocket");
 const { runLiveDataWebSocket } = require("./liveDataWebSocket");
+
+writeCss(gifConfigurations);
 
 console.log("Starting up server...");
 
@@ -18,10 +21,14 @@ const config = {};
 
 app.get("/config", (req, res) => {
   const gifName = req.query.gifName;
-  let gifConfig = gifDetails.find((details) => details.gifName === gifName);
-  if (!gifConfig) gifConfig = gifDetails[0];
+  let gifConfigToUse = gifConfigurations.find(
+    (gifConfiguration) => gifConfiguration.gifName === gifName
+  );
+
+  if (!gifConfigToUse) gifConfigToUse = gifConfigurations[0];
+
   res.json({
-    ...gifConfig,
+    ...gifConfigToUse,
     ...config,
   });
 });

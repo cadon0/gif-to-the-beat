@@ -82,14 +82,9 @@ See [How do I add a different gif?](#how-do-i-add-a-different-gif) for more info
      - you can tap along to each "beat" of the gif at [this website](https://www.all8.com/tools/bpm.htm)
        or in the osu! editor (timing tab, mute the music and tap with `T`)
 
-1. Also copy a `@keyframes` section in [styles.css](./app/styles.css) and update:
-   - After `@keyframes` should be the `gifName`
-   - `background-position` should be the _negative_ `spritesheetWidth` (with `px` on the end)
-
 ## Missing features:
 
 - Assisted offset tuning
-- Remove need to add a keyframes section in `styles.css`
 - osu! integration without StreamCompanion
 - Only requiring a gif instead of a manual sprite sheet conversion
 - A simpler way to calculate the exact length of a gif
