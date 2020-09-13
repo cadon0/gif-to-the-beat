@@ -2,8 +2,14 @@ body {
   margin: 0;
 }
 
-@keyframes play {
+@keyframes catjam {
   100% {
     background-position: -16016px;
+  }
+}
+
+@keyframes pikachu {
+  100% {
+    background-position: -1344px;
   }
 }

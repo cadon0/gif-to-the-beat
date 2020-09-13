@@ -2,25 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Tock from "tocktimer";
 
-import config from "../../server/config";
-
-const {
-  width,
-  height,
-  spritesheetWidth,
-  originalBpm,
-  seconds,
-  gifOffset,
-  spritesheetLocation,
-} = config;
-const frames = spritesheetWidth / width;
-
 class GifToTheBeat extends React.Component {
   constructor() {
     super();
     this.state = {
       config: {
-        ...config,
         mods: [],
       },
     };
@@ -34,7 +20,7 @@ class GifToTheBeat extends React.Component {
    * @param {Object} config
    */
   syncToSong = (config) => {
-    const { timingPoints, mapTime, isoTime } = config;
+    const { timingPoints, mapTime, isoTime, gifOffset } = config;
 
     // Clear previous timers
     this.timers.forEach((timer) => timer.stop());
@@ -90,20 +76,20 @@ class GifToTheBeat extends React.Component {
    * @param {Object} config
    */
   handleConfig = (config) => {
-    const { timingPoints, status, osuFile } = config;
+    const { originalBpm, timingPoints, status, osuFile } = config;
     const mapTime = Number(config.mapTime);
 
     const osuFileChanged = osuFile !== this.lastOsuFile;
     if (!osuFileChanged) {
       // Song is unchanged but many things can affect the time it's at
-      const mapTimeMovedBackward = mapTime < this.lastMapTime;
-      const mapTimeMovedAhead = mapTime - this.lastMapTime > 2000;
+      const mapTimeDiffInSeconds = mapTime - this.lastMapTime;
+      const mapTimeMovedBackward = mapTimeDiffInSeconds < 0;
+      const mapTimeMovedAhead = mapTimeDiffInSeconds > 2;
       if (!mapTimeMovedBackward && !mapTimeMovedAhead) {
         this.lastMapTime = mapTime;
         return;
       }
     }
-    this.lastMapTime = mapTime;
 
     if (status === "Playing") {
       // Wait until the map time is past 0 since that would indicate loading has finished
@@ -120,6 +106,7 @@ class GifToTheBeat extends React.Component {
 
     // Gif will be synced past this point
     this.lastOsuFile = osuFile;
+    this.lastMapTime = mapTime;
 
     // Editing offers slower playback which would currently be difficult to detect,
     // and lots of pausing/rewinding. It's probably not worth trying to sync with
@@ -133,12 +120,13 @@ class GifToTheBeat extends React.Component {
   };
 
   loadConfig = () => {
-    fetch("/config")
+    const gifName = window.location.pathname.slice(1);
+    fetch(gifName ? `/config?gifName=${gifName}` : "/config")
       .then((response) => response.json())
       .then(this.handleConfig)
       .catch((err) => {
         console.error(`Error loading config: ${err}`);
-        console.error(`The config was: ${JSON.stringify(config)}`);
+        console.error(`The config was: ${JSON.stringify(this.state.config)}`);
       });
   };
 
@@ -149,8 +137,20 @@ class GifToTheBeat extends React.Component {
   render() {
     if (!this.state.config) return null;
 
-    const { mods, status } = this.state.config;
-    let { bpm } = this.state.config;
+    const {
+      gifName,
+      width,
+      height,
+      spritesheetWidth,
+      spritesheetLocation,
+      seconds,
+      originalBpm,
+      bpm,
+      mods,
+      status,
+      mapTime,
+    } = this.state.config;
+    const frames = spritesheetWidth / width;
 
     if (bpm == 0) {
       console.error(
@@ -173,12 +173,12 @@ class GifToTheBeat extends React.Component {
         // If a song rewinds and the bpm is the same then the style values here will not change either.
         // The gif needs to be redrawn to sync back to the song but React will not do that
         // if the render content is unchanged. Using this key ensures the render content changes
-        key={this.state.config.mapTime}
+        key={mapTime}
         style={{
           width: `${width}px`,
           height: `${height}px`,
           background: `url(${spritesheetLocation}) left center`,
-          animation: `play ${newSeconds}s steps(${frames}) infinite`,
+          animation: `${gifName} ${newSeconds}s steps(${frames}) infinite`,
         }}
       ></div>
     );
