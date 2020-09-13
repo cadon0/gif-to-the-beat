@@ -82,14 +82,14 @@ class GifToTheBeat extends React.Component {
     const osuFileChanged = osuFile !== this.lastOsuFile;
     if (!osuFileChanged) {
       // Song is unchanged but many things can affect the time it's at
-      const mapTimeMovedBackward = mapTime < this.lastMapTime;
-      const mapTimeMovedAhead = mapTime - this.lastMapTime > 2000;
+      const mapTimeDiffInSeconds = mapTime - this.lastMapTime;
+      const mapTimeMovedBackward = mapTimeDiffInSeconds < 0;
+      const mapTimeMovedAhead = mapTimeDiffInSeconds > 2;
       if (!mapTimeMovedBackward && !mapTimeMovedAhead) {
         this.lastMapTime = mapTime;
         return;
       }
     }
-    this.lastMapTime = mapTime;
 
     if (status === "Playing") {
       // Wait until the map time is past 0 since that would indicate loading has finished
@@ -106,6 +106,7 @@ class GifToTheBeat extends React.Component {
 
     // Gif will be synced past this point
     this.lastOsuFile = osuFile;
+    this.lastMapTime = mapTime;
 
     // Editing offers slower playback which would currently be difficult to detect,
     // and lots of pausing/rewinding. It's probably not worth trying to sync with
@@ -167,6 +168,7 @@ class GifToTheBeat extends React.Component {
 
     const newSeconds = (seconds * originalBpm) / bpm;
 
+    console.log(`rendering: ${gifName}${mapTime}`);
     return (
       <div
         // If a song rewinds and the bpm is the same then the style values here will not change either.
