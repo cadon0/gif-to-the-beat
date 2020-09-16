@@ -15,12 +15,14 @@ getSongsDirectory = () => {
   }
 
   if (!songDirectory) {
-    console.log("First time? Please enter the path to the osu! songs folder.");
     console.log(
-      "\tFor example: C:\\Users\\<your_username>\\AppData\\Local\\osu!\\Songs"
+      "\n\nFirst time? Please enter the path to the osu! songs folder."
+    );
+    console.log(
+      "\te.g. C:\\Users\\<your_username>\\AppData\\Local\\osu!\\Songs"
     );
     while (!songDirectory) {
-      const songDirectoryFromUser = prompt(">");
+      const songDirectoryFromUser = path.resolve(prompt(">"));
       if (fs.existsSync(songDirectoryFromUser)) {
         fs.writeFileSync(songDirectoryFile, songDirectoryFromUser);
         console.log("Thanks! It's been saved for next time.");
@@ -33,10 +35,7 @@ getSongsDirectory = () => {
     }
   }
 
-  console.log(songDirectory);
   return songDirectory;
 };
-
-getSongsDirectory();
 
 module.exports = { getSongsDirectory };

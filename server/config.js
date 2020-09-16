@@ -4,8 +4,16 @@
 //       is also required after the restart is complete
 // ==========================================================
 
-// The port the server will run on
-const port = 727;
+// The ports to run on
+const webServerPort = 727;
+const osuDataFeedPort = 7270;
+
+// By default, disable gif sync while in the editor because:
+// - The editor offers slower playback which is not easily detectable
+// - Keeping the gif in sync through pauses is not supported
+//
+// If disabled the gif will play at original speed while the osu! editor is open
+const disableSyncInEditor = true;
 
 const gifConfigurations = [
   {
@@ -39,6 +47,8 @@ const gifConfigurations = [
 ];
 
 module.exports = {
+  webServerPort,
+  osuDataFeedPort,
+  disableSyncInEditor,
   gifConfigurations,
-  port,
 };
