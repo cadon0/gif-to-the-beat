@@ -8,11 +8,11 @@
 const webServerPort = 727;
 const osuDataFeedPort = 7270;
 
-// By default, disable gif sync while in the editor because:
+// By default, play gif at default speed while in the osu! editor because:
 // - The editor offers slower playback which is not easily detectable
 // - Keeping the gif in sync through pauses is not supported
-//
-// If disabled the gif will play at original speed while the osu! editor is open
+// - Mapping often means a lot of short rewinds
+// It can be enabled, but the experience may be poor
 const disableSyncInEditor = true;
 
 const gifConfigurations = [

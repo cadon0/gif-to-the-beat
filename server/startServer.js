@@ -7,13 +7,17 @@ const {
   webServerPort,
   disableSyncInEditor,
 } = require("./config");
-const { runDataWebSocket } = require("./dataWebSocket");
+const { runListenerWebSocket } = require("./runListenerWebSocket");
+const { runOsuMemoryReader } = require("./runOsuMemoryReader");
 
 writeCss(gifConfigurations);
 
+// Start C# program that reads the osu! memory signature and writes data to a WebSocket
+runOsuMemoryReader();
+
 // Listener WebSocket will write osu! state to this object
 const config = {};
-runDataWebSocket(config);
+runListenerWebSocket(config);
 
 console.log("Starting up server...");
 

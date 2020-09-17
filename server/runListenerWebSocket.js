@@ -7,7 +7,7 @@ const { getSongsDirectory } = require("./getSongsDirectory");
 
 let songsDirectory;
 
-runDataWebSocket = (config) => {
+runListenerWebSocket = (config) => {
   if (!songsDirectory) songsDirectory = getSongsDirectory();
 
   const ws = new WebSocket(
@@ -36,10 +36,10 @@ runDataWebSocket = (config) => {
 
   ws.onclose = () => {
     console.log(`Disconnected from feed of osu! data, reconnecting...`);
-    runDataWebSocket(config);
+    runListenerWebSocket(config);
   };
 
   ws.onerror = () => {};
 };
 
-module.exports = { runDataWebSocket };
+module.exports = { runListenerWebSocket };
