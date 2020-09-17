@@ -10,6 +10,8 @@ const {
 const { runListenerWebSocket } = require("./runListenerWebSocket");
 const { runOsuMemoryReader } = require("./runOsuMemoryReader");
 
+console.log("\n\nStarting up...");
+
 writeCss(gifConfigurations);
 
 // Start C# program that reads the osu! memory signature and writes data to a WebSocket
@@ -18,8 +20,6 @@ runOsuMemoryReader();
 // Listener WebSocket will write osu! state to this object
 const config = {};
 runListenerWebSocket(config);
-
-console.log("Starting up server...");
 
 const app = express();
 
@@ -48,8 +48,8 @@ app.get("*", (req, res) => {
 
 app.listen(webServerPort, () => {
   console.log(`
-==========================================================================
-        Now hosting a website on http://localhost:${webServerPort}
-==========================================================================
+=====================================================================
+            Now hosting a website on http://localhost:${webServerPort}
+=====================================================================
 `);
 });

@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const prompt = require("prompt-sync")({ sigint: true });
 
-const songDirectoryFile = path.resolve(__dirname, "./song-directory.txt");
+const songDirectoryFile = path.resolve(__dirname, "../song-directory.txt");
 
 let songDirectory;
 
@@ -13,7 +13,9 @@ getSongsDirectory = () => {
   } catch (error) {
     // File doesn't exist yet
   }
-
+  if (songDirectory) {
+    console.log(`Loaded songs directory from ${songDirectoryFile}`);
+  }
   if (!songDirectory) {
     console.log(
       "\n\nFirst time? Please enter the path to the osu! songs folder."
@@ -25,7 +27,7 @@ getSongsDirectory = () => {
       const songDirectoryFromUser = path.resolve(prompt(">"));
       if (fs.existsSync(songDirectoryFromUser)) {
         fs.writeFileSync(songDirectoryFile, songDirectoryFromUser);
-        console.log("Thanks! It's been saved for next time.");
+        console.log("Saved songs directory for next time.");
         songDirectory = songDirectoryFromUser;
       } else {
         console.log(

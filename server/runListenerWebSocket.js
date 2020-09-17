@@ -36,8 +36,13 @@ runListenerWebSocket = (config) => {
   };
 
   ws.onclose = () => {
-    console.log(`Disconnected from feed of osu! data, reconnecting...`);
-    runListenerWebSocket(config);
+    console.log(
+      "Disconnected from feed of osu! data, reconnecting in 3 seconds."
+    );
+    // A delayed reconnect seems to be necessary
+    // or messages are simply not received.
+    // Unsure if the problem is here or in the provider
+    setTimeout(() => runListenerWebSocket(config), 3000);
   };
 
   ws.onerror = () => {};
