@@ -27,8 +27,9 @@ runListenerWebSocket = (config) => {
     const osuFile = path.resolve(songsDirectory, data.relativeOsuFilePath);
     getTimingPoints(osuFile).then((timingPoints) => {
       config.status = data.status;
+      config.mapTime = data.mapTime;
+      config.isoTime = data.isoTime;
       config.bpmMultiplier = data.bpmMultiplier;
-      config.lastUpdate = data.isoTime;
       config.osuFile = osuFile;
       config.timingPoints = timingPoints;
     });

@@ -4,7 +4,7 @@ const { execFile } = require("child_process");
 const { osuDataFeedPort } = require("./config");
 
 runOsuMemoryReader = () => {
-  const exe = path.resolve(__dirname, "../GifToTheBeat.exe");
+  const exe = path.resolve(__dirname, "../GifToTheBeatDataProvider.exe");
   if (fs.existsSync(exe)) {
     console.log("Starting osu! memory reader...");
     execFile(exe, [osuDataFeedPort], (error, stdout, stderr) => {

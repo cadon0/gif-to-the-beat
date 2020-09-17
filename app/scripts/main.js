@@ -23,7 +23,7 @@ class GifToTheBeat extends React.Component {
 
     // Calculate how far through the song is currently
     const msSinceSnapshot = new Date() - new Date(isoTime);
-    const mapTimeInMs = mapTime * 1000 + msSinceSnapshot;
+    const mapTimeInMs = mapTime + msSinceSnapshot;
 
     let lastTimerSet;
     // Iterate through the timing points while setting timers
@@ -81,9 +81,9 @@ class GifToTheBeat extends React.Component {
     const osuFileChanged = osuFile !== this.lastOsuFile;
     if (!osuFileChanged) {
       // Song is unchanged but many things can affect the time it's at
-      const mapTimeDiffInSeconds = mapTime - this.lastMapTime;
-      const mapTimeMovedBackward = mapTimeDiffInSeconds < 0;
-      const mapTimeMovedAhead = mapTimeDiffInSeconds > 2;
+      const mapTimeDiffInMs = mapTime - this.lastMapTime;
+      const mapTimeMovedBackward = mapTimeDiffInMs < 0;
+      const mapTimeMovedAhead = mapTimeDiffInMs > 2000;
       if (!mapTimeMovedBackward && !mapTimeMovedAhead) {
         this.lastMapTime = mapTime;
         return;
