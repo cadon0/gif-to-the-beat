@@ -7,7 +7,19 @@ const { getSongsDirectory } = require("./getSongsDirectory");
 
 let songsDirectory;
 
-runListenerWebSocket = (config) => {
+let osuData = {};
+
+/**
+ * Returns the latest data received by the listener WebSocket connection
+ */
+function getOsuData() {
+  return osuData;
+}
+
+/**
+ * Opens a WebSocket connection to listen to and process the output from the osu! memory reader
+ */
+function runListenerWebSocket() {
   let messageCount;
   if (!songsDirectory) songsDirectory = getSongsDirectory();
 
@@ -16,11 +28,12 @@ runListenerWebSocket = (config) => {
   );
 
   ws.onopen = () => {
-    console.log("Connected to feed of osu! data");
+    console.log(
+      "Connected to feed of osu! data. Occasionally the data will be logged"
+    );
     messageCount = 0;
     setTimeout(() => {
-      // Messages are simply not received after establishing the connection occasionally.
-      // Unsure if the problem is here or in the provider
+      // Messages are simply not received after establishing the connection on occasion.
       if (messageCount === 0) {
         console.log(
           "osu! data isn't being received. Disconnecting to try again..."
@@ -33,26 +46,29 @@ runListenerWebSocket = (config) => {
   ws.onmessage = (message) => {
     messageCount++;
     const data = JSON.parse(message.data);
+    if (messageCount % 20 === 0) {
+      console.log(data);
+    }
 
     if (!data.relativeOsuFilePath) return;
 
     const osuFile = path.resolve(songsDirectory, data.relativeOsuFilePath);
     getTimingPoints(osuFile).then((timingPoints) => {
-      config.status = data.status;
-      config.mapTime = data.mapTime;
-      config.isoTime = data.isoTime;
-      config.bpmMultiplier = data.bpmMultiplier;
-      config.osuFile = osuFile;
-      config.timingPoints = timingPoints;
+      osuData.status = data.status;
+      osuData.mapTime = data.mapTime;
+      osuData.isoTime = data.isoTime;
+      osuData.bpmMultiplier = data.bpmMultiplier;
+      osuData.osuFile = osuFile;
+      osuData.timingPoints = timingPoints;
     });
   };
 
   ws.onclose = () => {
     console.log("Disconnected from feed of osu! data, reconnecting...");
-    runListenerWebSocket(config);
+    runListenerWebSocket(osuData);
   };
 
   ws.onerror = () => {};
-};
+}
 
-module.exports = { runListenerWebSocket };
+module.exports = { getOsuData, runListenerWebSocket };

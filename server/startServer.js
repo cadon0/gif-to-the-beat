@@ -7,19 +7,16 @@ const {
   webServerPort,
   disableSyncInEditor,
 } = require("./config");
-const { runListenerWebSocket } = require("./runListenerWebSocket");
+const { getOsuData, runListenerWebSocket } = require("./listenerWebSocket");
 const { runOsuMemoryReader } = require("./runOsuMemoryReader");
 
 console.log("\n\nStarting up...");
 
 writeCss(gifConfigurations);
 
-// Start C# program that reads the osu! memory signature and writes data to a WebSocket
 runOsuMemoryReader();
 
-// Listener WebSocket will write osu! state to this object
-const config = {};
-runListenerWebSocket(config);
+runListenerWebSocket();
 
 const app = express();
 
@@ -37,7 +34,7 @@ app.get("/config", (req, res) => {
 
   res.json({
     ...gifConfigToUse,
-    ...config,
+    ...getOsuData(),
     disableSyncInEditor,
   });
 });
