@@ -10,7 +10,10 @@ const {
 const { getOsuData, runListenerWebSocket } = require("./listenerWebSocket");
 const { runOsuMemoryReader } = require("./runOsuMemoryReader");
 
-console.log("\n\nStarting up...");
+// Clear console (of install/build logs)
+process.stdout.write("\033c");
+
+console.log("Starting up...");
 
 writeCss(gifConfigurations);
 
