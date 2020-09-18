@@ -29,7 +29,7 @@ function runListenerWebSocket() {
 
   ws.onopen = () => {
     console.log(
-      "Connected to feed of osu! data. Occasionally the data will be logged"
+      "Connected to feed of osu! data. Data will be logged occasionally to show it's active"
     );
     messageCount = 0;
     setTimeout(() => {

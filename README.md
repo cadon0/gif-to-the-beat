@@ -4,49 +4,85 @@ Listens to stats on what's playing in osu! and syncs a gif to the beat
 
 Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com/)
 
-[Demo](https://youtu.be/tGu67o-DhTE)
+[Video demonstration](https://youtu.be/tGu67o-DhTE)
 
-## Requirements:
+This will not work with osu!lazer and has only been tested on Windows
 
-- [Node.js](https://nodejs.org/en/download/)
-- [A `GifToTheBeatDataProvider.exe` file](https://github.com/cadon0/ProcessMemoryDataFinder/releases/tag/v1.0.0)
-  - the smaller one requires certain versions of .NET which may need to be installed separately
-  - the `-full` one should work out of the box if the size isn't a concern, rename it to remove the `-full` suffix
+A thank you to [Piotrekol](https://github.com/Piotrekol) for providing software
+which can extract information from osu!, such as [StreamCompanion](https://github.com/Piotrekol/StreamCompanion)
+and [ProcessMemoryDataFinder](https://github.com/Piotrekol/ProcessMemoryDataFinder)
 
-> Note: This has only been tested on Windows
+# Contents
 
-## How to use:
+- [Requirements](#requirements)
+- [How to use](#how-to-use)
+  - [Short version](#short-version)
+  - [Long version](#long-version)
+- [Multiple gifs?](#multiple-gifs)
+- [Help! It doesn't work](#help-it-doesnt-work)
+- [It's out of sync!](#its-out-of-sync)
+- [How do I add a different gif?](#how-do-i-add-a-different-gif)
+- [Missing features](#missing-features)
+- [License](#license)
 
-- Download [the latest release](https://github.com/cadon0/gif-to-the-beat/releases) or source code
-- Place the `GifToTheBeatDataProvider.exe` file downloaded earlier into the root directory (main folder) of this project
-- Double-click `start.bat`. It'll say when it's ready and start reporting osu! information
-  - a manual setup is running the commands `npm ci` (first time only) and `npm start` from the root directory of this project
-- Add a "Browser" source in OBS and enter the URL `http://localhost:727/`
+# Requirements:
+
+- [Node.js](https://nodejs.org/en/download/) must be installed
+
+# How to use:
+
+#### Short version:
+
+- Download [this .zip file](https://puu.sh/GtYqP/02f8078997.zip). Extract it anywhere
+- Double-click `start.bat`
+- Provide the osu! "Songs" folder if running for the first time
+- Add a "Browser" source in OBS and enter the URL `http://localhost:727/catjam`
+
+> IMPORTANT: The gif may not display next time if OBS is opened _before/without_ running `start.bat` first.
+> Please open the settings for the source in OBS once it is running, and click "Refresh cache of the current page"
+
+#### Long version:
+
+- Download:
+
+  - The [latest release](https://github.com/cadon0/gif-to-the-beat/releases) or [source code](https://github.com/cadon0/gif-to-the-beat/archive/master.zip)
+  - A [`GifToTheBeatDataProvider.exe` file](https://github.com/cadon0/ProcessMemoryDataFinder/releases/tag/v1.0.0)
+    - the smaller one requires certain versions of .NET which may need to be installed separately
+    - the `-full` one is much larger but more likely to work without needing .NET installations, rename it to remove the `-full` suffix
+  - These [sample images](https://imgur.com/a/Oj03erv) which will work right away
+    - See [How do I add a different gif?](#how-do-I-add-a-different-gif) to create and configure your own
+
+- Place `GifToTheBeatDataProvider.exe` into the main folder and the images into the [images](./app/images) folder, like so:
+
+  ![image](https://user-images.githubusercontent.com/25311843/93601811-e1eec400-fa15-11ea-81c6-2cd2864433a3.png)
+
+- Run `start.bat`
+  - An alternative is to run the commands `npm ci` (first time only) and `npm start` from the root directory of this project
+- Provide the osu! "Songs" folder location if this is the first time
+  - The songs folder location is saved in `song-directory.txt`. If there was a mistake this file can be edited or deleted
+- Add a "Browser" source in OBS and enter the URL e.g. `http://localhost:727/catjam`
   - this URL can also be opened in a browser, useful if you need to fiddle with offset values
-  - the port number can be changed in [config.js](./src/config.js) (if in doubt edit with notepad)
+  - the port number can be changed in [config.js](./server/config.js) (if in doubt edit with notepad)
 
-> IMPORTANT: Next time, if OBS is opened _before/without_ starting the server first, the gif may not display.
-> Please open the browser source settings once you have started the server and click "Refresh cache of the current page"
+# Multiple gifs?
 
-### Help! It doesn't work
+More sources can be added for more gifs by adding their names (this is the `gifName` in their [settings](./server/config.js)) to the end of the URL
+e.g. the two samples provided are `http://localhost:727/catjam` and `http://localhost:727/pikachu`
+
+# Help! It doesn't work
 
 Please [open an issue](https://github.com/cadon0/gif-to-the-beat/issues/new)
 
-### It's out of sync!
+# It's out of sync!
 
 In the configuration file - [config.js](./server/config.js) in the `server` folder (if in doubt open it with Notepad) - there are offset values for each gif.
 Increase the offset if the gif appears to hit the beat before the song does, otherwise decrease
 
-For now each change requires a restart
+Each change to settings requires a restart
 
 It's recommended to view the gif from a browser while tuning as the OBS preview is delayed. Note that the browser does not need to be refreshed
 
-### Multiple gifs?
-
-More sources can be added for more gifs by adding their names (this is the `gifName` in their [settings](./src/config.js)) to the end of the URL
-e.g. the two samples provided are `http://localhost:727/catjam` and `http://localhost:727/pikachu`
-
-## How do I add a different gif?
+# How do I add a different gif?
 
 > WARNING: If a gif has an uneven cycle time for each "beat" it will likely get out of sync with the music.
 > For example, certain frames of the CatJam gif had to be removed.
@@ -81,9 +117,13 @@ e.g. the two samples provided are `http://localhost:727/catjam` and `http://loca
        and then played in [VLC media player](https://www.videolan.org/vlc/) with [an extension](https://addons.videolan.org/p/1154032/).
        Use pattern `[E]` for the extension. It's a bit weird - 3400 milliseconds will be displayed as `03,400`
 
-## Missing features:
+# Missing features:
 
 - Assisted offset tuning
 - Only requiring a gif instead of a manual sprite sheet conversion
 - A simpler way to calculate the exact length of a gif
 - Electron GUI for automatic updates, adding/configuring gifs, etc.
+
+# License
+
+[MIT](./LICENSE)
