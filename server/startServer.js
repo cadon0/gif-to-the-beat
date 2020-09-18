@@ -2,22 +2,27 @@ const express = require("express");
 const path = require("path");
 
 const { writeCss } = require("./writeCss");
-const { gifConfigurations, port } = require("./config");
-const { runMapDataWebSocket } = require("./mapDataWebSocket");
-const { runLiveDataWebSocket } = require("./liveDataWebSocket");
+const {
+  gifConfigurations,
+  webServerPort,
+  disableSyncInEditor,
+} = require("./config");
+const { getOsuData, runListenerWebSocket } = require("./listenerWebSocket");
+const { runOsuMemoryReader } = require("./runOsuMemoryReader");
+
+console.log("\n\nStarting up...");
 
 writeCss(gifConfigurations);
 
-console.log("Starting up server...");
+runOsuMemoryReader();
+
+runListenerWebSocket();
 
 const app = express();
 
 app.use(express.static(path.join(__dirname, "../dist")));
 app.use(express.static(path.join(__dirname, "../app/styles")));
 app.use(express.static(path.join(__dirname, "../app/images")));
-
-// WebSockets write the output from StreamCompanion to this object
-const config = {};
 
 app.get("/config", (req, res) => {
   const gifName = req.query.gifName;
@@ -29,7 +34,8 @@ app.get("/config", (req, res) => {
 
   res.json({
     ...gifConfigToUse,
-    ...config,
+    ...getOsuData(),
+    disableSyncInEditor,
   });
 });
 
@@ -37,12 +43,10 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../app/index.html"));
 });
 
-app.listen(port, () => {
+app.listen(webServerPort, () => {
   console.log(`
-========================================================================
-          Now hosting a website on http://localhost:${port} :-)
-========================================================================
+=====================================================================
+            Now hosting a website on http://localhost:${webServerPort}
+=====================================================================
 `);
-  runMapDataWebSocket(config);
-  runLiveDataWebSocket(config);
 });

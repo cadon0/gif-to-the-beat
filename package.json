@@ -19,6 +19,7 @@
   "homepage": "https://github.com/cadon0/bpm-adjusted-gif#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "prompt-sync": "^4.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "tocktimer": "^1.0.12",

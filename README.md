@@ -9,44 +9,42 @@ Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com
 ## Requirements:
 
 - [Node.js](https://nodejs.org/en/download/)
-- [StreamCompanion](https://github.com/Piotrekol/StreamCompanion/releases) -
-  please get [this version](https://github.com/Piotrekol/StreamCompanion/releases/tag/v200813.17) if the latest release does not work
+- [A `GifToTheBeatDataProvider.exe` file](https://github.com/cadon0/ProcessMemoryDataFinder/releases/tag/v1.0.0)
+  - the smaller one requires certain versions of .NET which may need to be installed separately
+  - the `-full` one should work out of the box if the size isn't a concern, rename it to remove the `-full` suffix
 
-> IMPORTANT: StreamCompanion as of `v200813.17` is currently missing a key feature for syncing.
-> You can manually patch it by taking `OsuMemoryEventSource.dll` from the [dll folder](./dll) once you download this project,
-> and replace the original (after making a backup of course) in StreamCompanion's Plugin folder - e.g. `C:\Program Files (x86)\StreamCompanion\Plugins`
+> Note: This has only been tested on Windows
 
 ## How to use:
 
-- Download a copy of this project (or clone it)
-- Double-click `start.bat`. It'll say when it's ready
-  - A manual setup is running the commands `npm ci` and `npm start`
+- Download [the latest release](https://github.com/cadon0/gif-to-the-beat/releases) or source code
+- Place the `GifToTheBeatDataProvider.exe` file downloaded earlier into the root directory (main folder) of this project
+- Double-click `start.bat`. It'll say when it's ready and start reporting osu! information
+  - a manual setup is running the commands `npm ci` (first time only) and `npm start` from the root directory of this project
 - Add a "Browser" source in OBS and enter the URL `http://localhost:727/`
-  - This URL can also be opened in a browser, useful if you need to fiddle with offset values
-  - The port number can be changed in [config.js](./src/config.js) (if in doubt edit with notepad)
+  - this URL can also be opened in a browser, useful if you need to fiddle with offset values
+  - the port number can be changed in [config.js](./src/config.js) (if in doubt edit with notepad)
 
 > IMPORTANT: Next time, if OBS is opened _before/without_ starting the server first, the gif may not display.
 > Please open the browser source settings once you have started the server and click "Refresh cache of the current page"
 
+### Help! It doesn't work
+
+Please [open an issue](https://github.com/cadon0/gif-to-the-beat/issues/new)
+
+### It's out of sync!
+
+In the configuration file - [config.js](./server/config.js) in the `server` folder (if in doubt open it with Notepad) - there are offset values for each gif.
+Increase the offset if the gif appears to hit the beat before the song does, otherwise decrease
+
+For now each change requires a restart
+
+It's recommended to view the gif from a browser while tuning as the OBS preview is delayed. Note that the browser does not need to be refreshed
+
 ### Multiple gifs?
 
 More sources can be added for more gifs by adding their names (this is the `gifName` in their [settings](./src/config.js)) to the end of the URL
-e.g. `http://localhost:727/catjam` and `http://localhost:727/pikachu`
-
-See [How do I add a different gif?](#how-do-i-add-a-different-gif) for more info.
-
-### Integration with osu!
-
-- Open StreamCompanion's settings to the "Output patterns" tab
-- Add three entries, name them:
-  - `liveInfo` with formatting `!status!,!time!,!isotime!`
-  - `bpmInfo` with formatting `!mainbpm!,!mods!`
-  - `osuFile` with formatting `!osufilelocation!`
-- For each entry set the "Save event" dropdown to `All`
-- Check "Enable WebSocketServer output of patterns"
-- Click "Save"!
-
-![image](https://user-images.githubusercontent.com/25311843/92326306-36ed1a80-f0a5-11ea-9cd8-80211f9b3fc9.png)
+e.g. the two samples provided are `http://localhost:727/catjam` and `http://localhost:727/pikachu`
 
 ## How do I add a different gif?
 
@@ -56,11 +54,11 @@ See [How do I add a different gif?](#how-do-i-add-a-different-gif) for more info
 
 1. Take your gif and [generate a sprite sheet](https://ezgif.com/gif-to-sprite)
 
-   - Check the "Stack horizontally" box, the sprites should be in a single line from left to right
+   - check the "Stack horizontally" box, the sprites should be in a single line from left to right
 
-1. Place the sprite sheet in the [images](./app/images) folder or upload it somewhere.
+1. Place the sprite sheet in the [images](./app/images) folder or upload it somewhere
 
-1. In [config.js](./server/config.js) there are settings for each gif. Copy or replace one (be sure to enclose sections with `{` & `}`, and separate by `,`)
+1. In [config.js](./server/config.js) there are settings for each gif. Copy or replace one, and be sure to enclose sections with `{` & `}`, and separate by `,`.
    The settings are:
 
    - `gifName` - this will be matched with the URL e.g. the settings with `gifName` "pikachu" are used at `http://localhost:727/pikachu`
@@ -69,23 +67,23 @@ See [How do I add a different gif?](#how-do-i-add-a-different-gif) for more info
    - `spritesheetWidth`
    - `spritesheetLocation`
    - `gifOffset` - if the gif is slightly out of sync with osu! in general or does not start on the "beat" this is how you get it to sync
-     - Rearranging the frames of the gif so it starts on-beat can make this easier
-       (again [upload here](https://ezgif.com/maker), click "frames", then rearrange)
+     - rearranging the frames of the gif so it starts on-beat can make this easier (again [upload here](https://ezgif.com/maker), click "frames", then rearrange)
+   - `originalBpm`
+     - you can tap along to each "beat" of the gif at [this website](https://www.all8.com/tools/bpm.htm)
+       or in the osu! editor (timing tab, mute the music and tap with `T`)
+     - if the gif length (`seconds`) is already known this can be calculated by `60 * beatsInGif / seconds = originalBpm`.
+       e.g. CatJam has 13 "beats", `60 * 13 / 5.72 = 136.363...`
    - `seconds`
-     - a stopwatch is okay. Attempt a few times and take the average, or let the gif cycle 5 times and divive by 5 or something
+     - if the `originalBpm` is already known `60 * beatsInGif / originalBpm = seconds`.
+       e.g. CatJam has 13 "beats", `60 * 13 / 136.363... = 5.72`
+     - a stopwatch is okay. Let the gif cycle fully a number of times and take the average
      - the accurate but highly painful method: the gif can be [converted into `.mp4`](https://ezgif.com/gif-to-mp4)
        and then played in [VLC media player](https://www.videolan.org/vlc/) with [an extension](https://addons.videolan.org/p/1154032/).
        Use pattern `[E]` for the extension. It's a bit weird - 3400 milliseconds will be displayed as `03,400`
-   - `originalBpm`
-     - assuming `seconds` is accurate, this can be calculated by `60 / seconds * beatsInGif`.
-       e.g. CatJam has 13 "beats", `60 / 5.72 * 13 = 136.363...`
-     - you can tap along to each "beat" of the gif at [this website](https://www.all8.com/tools/bpm.htm)
-       or in the osu! editor (timing tab, mute the music and tap with `T`)
 
 ## Missing features:
 
 - Assisted offset tuning
-- osu! integration without StreamCompanion
 - Only requiring a gif instead of a manual sprite sheet conversion
 - A simpler way to calculate the exact length of a gif
-- GUI
+- Electron GUI for automatic updates, adding/configuring gifs, etc.

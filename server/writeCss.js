@@ -1,7 +1,14 @@
 const fs = require("fs");
 const path = require("path");
 
-writeCss = (gifConfigs) => {
+/**
+ * Writes a `@keyframes` setting into CSS to match each gif configuration,
+ * since it depends on each sprite sheet's size.
+ * This means only the configuration needs to be maintained
+ *
+ * @param {Object[]} gifConfigs - the configurations for each available gif
+ */
+function writeCss(gifConfigs) {
   let css = `body {
   margin: 0;
 }\n`;
@@ -20,6 +27,6 @@ writeCss = (gifConfigs) => {
       `Failed to write "styles.css" file for animations: ${error.message}`
     );
   }
-};
+}
 
 module.exports = { writeCss };

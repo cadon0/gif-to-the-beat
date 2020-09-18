@@ -14,18 +14,16 @@ const path = require("path");
  * @returns {Promise<string[]>} A promise resolving to a list of timing points
  */
 function getTimingPoints(filePath) {
-  if (!filePath) {
-    console.log(
-      "StreamCompanion did not send an osu! file to lookup. This can happen when osu! is closed."
-    );
-    return Promise.resolve([]);
-  }
   return new Promise((resolve, reject) => {
     fs.readFile(path.resolve(filePath), "utf-8", (err, fileContents) => {
       if (err) return reject(err);
 
       const lines = fileContents.split(/\r?\n/g);
-      const fileFormatVersion = lines[0].match(/v(\d+)/)[1];
+      const fileFormatLine = lines.find((line) =>
+        // Single character wildcard handles presence of BOM
+        line.match(/^.?osu file format v\d+$/)
+      );
+      const fileFormatVersion = fileFormatLine.match(/v(\d+)/)[1];
 
       const firstTimingPointIndex = lines.indexOf("[TimingPoints]") + 1;
       let allTimingPoints;

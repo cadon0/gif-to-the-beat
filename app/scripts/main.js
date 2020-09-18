@@ -5,11 +5,6 @@ import Tock from "tocktimer";
 class GifToTheBeat extends React.Component {
   constructor() {
     super();
-    this.state = {
-      config: {
-        mods: [],
-      },
-    };
     this.timers = [];
   }
 
@@ -28,7 +23,7 @@ class GifToTheBeat extends React.Component {
 
     // Calculate how far through the song is currently
     const msSinceSnapshot = new Date() - new Date(isoTime);
-    const mapTimeInMs = mapTime * 1000 + msSinceSnapshot;
+    const mapTimeInMs = mapTime + msSinceSnapshot;
 
     let lastTimerSet;
     // Iterate through the timing points while setting timers
@@ -79,42 +74,32 @@ class GifToTheBeat extends React.Component {
     const { originalBpm, timingPoints, status, osuFile } = config;
     const mapTime = Number(config.mapTime);
 
+    // No timing points available for syncing to song
+    if (!timingPoints)
+      return this.setState({ config: { ...config, bpm: originalBpm } });
+
     const osuFileChanged = osuFile !== this.lastOsuFile;
     if (!osuFileChanged) {
       // Song is unchanged but many things can affect the time it's at
-      const mapTimeDiffInSeconds = mapTime - this.lastMapTime;
-      const mapTimeMovedBackward = mapTimeDiffInSeconds < 0;
-      const mapTimeMovedAhead = mapTimeDiffInSeconds > 2;
+      const mapTimeDiffInMs = mapTime - this.lastMapTime;
+      const mapTimeMovedBackward = mapTimeDiffInMs < 0;
+      const mapTimeMovedAhead = mapTimeDiffInMs > 2000;
       if (!mapTimeMovedBackward && !mapTimeMovedAhead) {
         this.lastMapTime = mapTime;
         return;
       }
     }
 
-    if (status === "Playing") {
+    if (status === "Editing" && config.disableSyncInEditor) {
+      return this.setState({ config: { ...config, bpm: originalBpm } });
+    } else if (status === "Playing") {
       // Wait until the map time is past 0 since that would indicate loading has finished
       if (mapTime <= 0) return;
-    } else if (status !== "Playing") {
-      // The LiveData socket can still be sending data for the previous song for a while after a change
-      if (!this.waitOneCycle) {
-        this.waitOneCycle = true;
-        return;
-      } else {
-        this.waitOneCycle = false;
-      }
     }
 
     // Gif will be synced past this point
     this.lastOsuFile = osuFile;
     this.lastMapTime = mapTime;
-
-    // Editing offers slower playback which would currently be difficult to detect,
-    // and lots of pausing/rewinding. It's probably not worth trying to sync with
-    if (status === "Editing")
-      return this.setState({ config: { ...config, bpm: originalBpm } });
-
-    // No timing points available for syncing to song
-    if (!timingPoints || !timingPoints.length) return this.setState({ config });
 
     this.syncToSong(config);
   };
@@ -135,7 +120,7 @@ class GifToTheBeat extends React.Component {
   }
 
   render() {
-    if (!this.state.config) return null;
+    if (!this.state || !this.state.config) return null;
 
     const {
       gifName,
@@ -145,25 +130,15 @@ class GifToTheBeat extends React.Component {
       spritesheetLocation,
       seconds,
       originalBpm,
-      mods,
+      bpmMultiplier,
       status,
       mapTime,
     } = this.state.config;
-    let { bpm } = this.state.config;
     const frames = spritesheetWidth / width;
 
-    if (bpm == 0) {
-      console.error(
-        "StreamCompanion doesn't detect the bpm of maps added in the osu! session, using default bpm"
-      );
-      bpm = originalBpm;
-    }
-
+    let { bpm } = this.state.config;
     if (status === "Playing") {
-      const doubleTimeActive = mods.find((mod) => mod === "DT" || mod === "NC");
-      if (doubleTimeActive) bpm *= 1.5;
-      const halfTimeActive = mods.find((mod) => mod === "HT");
-      if (halfTimeActive) bpm *= 0.75;
+      bpm *= bpmMultiplier;
     }
 
     const newSeconds = (seconds * originalBpm) / bpm;
