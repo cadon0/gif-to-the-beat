@@ -3,3 +3,4 @@ node_modules
 dist
 song-directory.txt
 GifToTheBeatDataProvider.exe
+app/images/*.png
