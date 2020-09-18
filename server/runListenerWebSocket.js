@@ -8,6 +8,7 @@ const { getSongsDirectory } = require("./getSongsDirectory");
 let songsDirectory;
 
 runListenerWebSocket = (config) => {
+  let messageCount;
   if (!songsDirectory) songsDirectory = getSongsDirectory();
 
   const ws = new WebSocket(
@@ -15,12 +16,23 @@ runListenerWebSocket = (config) => {
   );
 
   ws.onopen = () => {
-    console.log(`Connected to feed of osu! data`);
+    console.log("Connected to feed of osu! data");
+    messageCount = 0;
+    setTimeout(() => {
+      // Messages are simply not received after establishing the connection occasionally.
+      // Unsure if the problem is here or in the provider
+      if (messageCount === 0) {
+        console.log(
+          "osu! data isn't being received. Disconnecting to try again..."
+        );
+        ws.close();
+      }
+    }, 3000);
   };
 
   ws.onmessage = (message) => {
+    messageCount++;
     const data = JSON.parse(message.data);
-    console.log(data);
 
     if (!data.relativeOsuFilePath) return;
 
@@ -36,13 +48,8 @@ runListenerWebSocket = (config) => {
   };
 
   ws.onclose = () => {
-    console.log(
-      "Disconnected from feed of osu! data, reconnecting in 3 seconds."
-    );
-    // A delayed reconnect seems to be necessary
-    // or messages are simply not received.
-    // Unsure if the problem is here or in the provider
-    setTimeout(() => runListenerWebSocket(config), 3000);
+    console.log("Disconnected from feed of osu! data, reconnecting...");
+    runListenerWebSocket(config);
   };
 
   ws.onerror = () => {};
