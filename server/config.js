@@ -17,7 +17,7 @@ const disableSyncInEditor = true;
 
 const gifConfigurations = [
   {
-    // A name - used to match with URLs e.g. `http://localhost:727/catjam`
+    // A name - used to match with URLs e.g. http://localhost:727/catjam
     gifName: "catjam",
     // Dimensions of the gif
     width: 112,
@@ -28,7 +28,7 @@ const gifConfigurations = [
     // Length of the original gif
     seconds: 5.72,
     // Milliseconds until the gif hits the first "beat".
-    // Increase to start earlier, decrease to start later
+    // Increase to start the gif earlier relative to the music, decrease to start later
     gifOffset: 15,
     // The location of the sprite sheet for the gif, either a URL
     // or the name of a file in the images folder with "./" in front

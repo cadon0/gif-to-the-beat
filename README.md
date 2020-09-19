@@ -1,20 +1,19 @@
 # gif-to-the-beat
 
-Listens to stats on what's playing in osu! and syncs a gif to the beat
+Listens to stats on what's playing in osu! and syncs a gif to the beat. [Video demonstration](https://youtu.be/tGu67o-DhTE)
 
 Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com/)
 
-[Video demonstration](https://youtu.be/tGu67o-DhTE)
-
-This will not work with osu!lazer and has only been tested on Windows
+This will not work with [osu!lazer](https://github.com/ppy/osu) and has only been tested on Windows
 
 A thank you to [Piotrekol](https://github.com/Piotrekol) for providing software
-which can extract information from osu!, such as [StreamCompanion](https://github.com/Piotrekol/StreamCompanion)
-and [ProcessMemoryDataFinder](https://github.com/Piotrekol/ProcessMemoryDataFinder)
+which can extract information from osu!, such as [ProcessMemoryDataFinder](https://github.com/Piotrekol/ProcessMemoryDataFinder).
+For other osu! stream overlays you may be interested in their [StreamCompanion](https://github.com/Piotrekol/StreamCompanion) project
 
 # Contents
 
 - [Requirements](#requirements)
+- [Settings](#settings)
 - [How to use](#how-to-use)
   - [Short version](#short-version)
   - [Long version](#long-version)
@@ -29,14 +28,22 @@ and [ProcessMemoryDataFinder](https://github.com/Piotrekol/ProcessMemoryDataFind
 
 - [Node.js](https://nodejs.org/en/download/) must be installed
 
+# Settings
+
+Configuration or settings are mentioned a few times throughout the instructions.
+They can usually be found in the [`config.js`](./server/config.js) file in the `server` folder
+
+If in doubt it can always be opened and edited with Nodepad
+
 # How to use:
 
 #### Short version:
 
 - Download [this .zip file](https://puu.sh/GtYqP/02f8078997.zip). Extract it anywhere
 - Double-click `start.bat`
-- Provide the osu! "Songs" folder if running for the first time
-- Add a "Browser" source in OBS and enter the URL `http://localhost:727/catjam`
+  - You will be asked to enter the osu! "Songs" folder if running for the first time
+- Add a "Browser" source in OBS with URL `http://localhost:727/catjam` and `width`/`height` 112
+  - Open the URL in a web browser to check that it's syncing correctly as the OBS preview is delayed
 
 > IMPORTANT: The gif may not display next time if OBS is opened _before/without_ running `start.bat` first.
 > Please open the settings for the source in OBS once it is running, and click "Refresh cache of the current page"
@@ -62,12 +69,12 @@ and [ProcessMemoryDataFinder](https://github.com/Piotrekol/ProcessMemoryDataFind
   - The songs folder location is saved in `song-directory.txt`. If there was a mistake this file can be edited or deleted
 - Add a "Browser" source in OBS and enter the URL e.g. `http://localhost:727/catjam`
   - this URL can also be opened in a browser, useful if you need to fiddle with offset values
-  - the port number can be changed in [config.js](./server/config.js) (if in doubt edit with notepad)
+  - the port number is a setting that can be changed
 
 # Multiple gifs?
 
-More sources can be added for more gifs by adding their names (this is the `gifName` in their [settings](./server/config.js)) to the end of the URL
-e.g. the two samples provided are `http://localhost:727/catjam` and `http://localhost:727/pikachu`
+More sources can be added to OBS for more gifs by adding their names (this is the `gifName` in their [settings](./server/config.js)) to the end of the URL
+e.g. the two samples would be `http://localhost:727/catjam` and `http://localhost:727/pikachu`
 
 # Help! It doesn't work
 
@@ -75,8 +82,10 @@ Please [open an issue](https://github.com/cadon0/gif-to-the-beat/issues/new)
 
 # It's out of sync!
 
-In the configuration file - [config.js](./server/config.js) in the `server` folder (if in doubt open it with Notepad) - there are offset values for each gif.
-Increase the offset if the gif appears to hit the beat before the song does, otherwise decrease
+In the osu! editor? The `disableSyncInEditor` setting can be changed to `false`
+
+In the configuration file there are offset values for each gif.
+Increase the offset if the gif appears to hit the beat after the song does, otherwise decrease
 
 Each change to settings requires a restart
 
