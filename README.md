@@ -1,6 +1,6 @@
 # gif-to-the-beat
 
-Listens to stats on what's playing in osu! and syncs a gif to the beat. [Video demonstration](https://youtu.be/tGu67o-DhTE)
+Listens to stats on what's playing in osu! and syncs a gif to the beat. [Video demonstration](https://youtu.be/aDBeuo3ENqU)
 
 Designed such that it can be used as a "plugin" for [OBS](https://obsproject.com/)
 
