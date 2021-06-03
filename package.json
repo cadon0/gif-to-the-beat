@@ -1,5 +1,5 @@
 {
-  "name": "bpm-adjusted-gif",
+  "name": "gif-to-the-beat",
   "version": "1.0.0",
   "description": "Gif speeder-upper. Or slower-downer... A \"plugin\" for OBS.",
   "main": "main.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cadon0/bpm-adjusted-gif.git"
+    "url": "git+https://github.com/cadon0/gif-to-the-beat.git"
   },
   "author": "Caleb Donnelly",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cadon0/bpm-adjusted-gif/issues"
+    "url": "https://github.com/cadon0/gif-to-the-beat/issues"
   },
-  "homepage": "https://github.com/cadon0/bpm-adjusted-gif#readme",
+  "homepage": "https://github.com/cadon0/gif-to-the-beat#readme",
   "dependencies": {
     "express": "^4.17.1",
     "prompt-sync": "^4.2.0",
