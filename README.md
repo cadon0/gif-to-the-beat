@@ -78,7 +78,12 @@ e.g. the two samples would be `http://localhost:727/catjam` and `http://localhos
 
 # Help! It doesn't work
 
-Please [open an issue](https://github.com/cadon0/gif-to-the-beat/issues/new)
+Please check the common issues below, or [open an issue](https://github.com/cadon0/gif-to-the-beat/issues/new)
+
+- > The application to execute does not exist: 'C:\Users\<name>\AppData\Local\Temp.net\GifToTheBeatDataProvider\xvqwwjrg.y50\GifToTheBeatDataProvider.dll'.`
+
+  Please delete this folder it mentions and try again: `C:\Users\<name>\AppData\Local\Temp.net\GifToTheBeatDataProvider`
+
 
 # It's out of sync!
 
