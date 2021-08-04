@@ -84,7 +84,6 @@ Please check the common issues below, or [open an issue](https://github.com/cado
 
   Please delete this folder it mentions and try again: `C:\Users\<name>\AppData\Local\Temp.net\GifToTheBeatDataProvider`
 
-
 # It's out of sync!
 
 In the osu! editor? The `disableSyncInEditor` setting can be changed to `false`
@@ -130,6 +129,10 @@ It's recommended to view the gif from a browser while tuning as the OBS preview 
      - the accurate but highly painful method: the gif can be [converted into `.mp4`](https://ezgif.com/gif-to-mp4)
        and then played in [VLC media player](https://www.videolan.org/vlc/) with [an extension](https://addons.videolan.org/p/1154032/).
        Use pattern `[E]` for the extension. It's a bit weird - 3400 milliseconds will be displayed as `03,400`
+
+1. Add or edit your browser source in OBS, the end of the link should match the `gifName`. Refresh the cache if the image or settings don't update in OBS
+
+![image](https://user-images.githubusercontent.com/25311843/128113821-ca254db4-8881-4ae9-b1b4-f21bf79d6f88.png)
 
 # Missing features:
 
