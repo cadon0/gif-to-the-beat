@@ -53,7 +53,7 @@ If in doubt it can always be opened and edited with Nodepad
 - Download:
 
   - The [latest release](https://github.com/cadon0/gif-to-the-beat/releases) or [source code](https://github.com/cadon0/gif-to-the-beat/archive/master.zip)
-  - A [`GifToTheBeatDataProvider.exe` file](https://github.com/cadon0/ProcessMemoryDataFinder/releases/tag/v1.0.0)
+  - A [`GifToTheBeatDataProvider.exe` file](https://github.com/cadon0/ProcessMemoryDataFinder/releases)
     - the smaller one requires certain versions of .NET which may need to be installed separately
     - the `-full` one is much larger but more likely to work without needing .NET installations, rename it to remove the `-full` suffix
   - These [sample images](https://imgur.com/a/Oj03erv) which will work right away
