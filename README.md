@@ -39,8 +39,8 @@ If in doubt it can always be opened and edited with Nodepad
 
 #### Short version:
 
-- Download [this .zip file](https://puu.sh/GtYqP/02f8078997.zip). Extract it anywhere
-- Double-click `start.bat`
+- Download [this .zip file](https://github.com/cadon0/gif-to-the-beat/releases/download/v1.0.1/gif-to-the-beat.zip). Extract it anywhere
+- Open the folder and double-click `start.bat`
   - You will be asked to enter the osu! "Songs" folder if running for the first time
 - Add a "Browser" source in OBS with URL `http://localhost:727/catjam` and `width`/`height` 112
   - Open the URL in a web browser to check that it's syncing correctly as the OBS preview is delayed
@@ -54,12 +54,8 @@ If in doubt it can always be opened and edited with Nodepad
 
   - The [latest release](https://github.com/cadon0/gif-to-the-beat/releases) or [source code](https://github.com/cadon0/gif-to-the-beat/archive/master.zip)
   - A [`GifToTheBeatDataProvider.exe` file](https://github.com/cadon0/ProcessMemoryDataFinder/releases)
-    - the smaller one requires certain versions of .NET which may need to be installed separately
-    - the `-full` one is much larger but more likely to work without needing .NET installations, rename it to remove the `-full` suffix
-  - These [sample images](https://imgur.com/a/Oj03erv) which will work right away
-    - See [How do I add a different gif?](#how-do-I-add-a-different-gif) to create and configure your own
 
-- Place `GifToTheBeatDataProvider.exe` into the main folder and the images into the [images](./app/images) folder, like so:
+- Place `GifToTheBeatDataProvider.exe` into the main folder like so:
 
   ![image](https://user-images.githubusercontent.com/25311843/93601811-e1eec400-fa15-11ea-81c6-2cd2864433a3.png)
 
@@ -79,6 +75,8 @@ e.g. the two samples would be `http://localhost:727/catjam` and `http://localhos
 # Help! It doesn't work
 
 Please check the common issues below, or [open an issue](https://github.com/cadon0/gif-to-the-beat/issues/new)
+
+- The `.exe` file may need to be updated, check for the latest one [here](https://github.com/cadon0/ProcessMemoryDataFinder/releases)
 
 - > The application to execute does not exist: 'C:\Users\<name>\AppData\Local\Temp.net\GifToTheBeatDataProvider\xvqwwjrg.y50\GifToTheBeatDataProvider.dll'.`
 
