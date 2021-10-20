@@ -34,16 +34,6 @@ const gifConfigurations = [
     // or the name of a file in the images folder with "./" in front
     spritesheetLocation: "./catjam-spritesheet.png",
   },
-  {
-    gifName: "pikachu",
-    width: 112,
-    height: 112,
-    spritesheetWidth: 1344,
-    originalBpm: 142.857,
-    seconds: 0.84,
-    gifOffset: 12,
-    spritesheetLocation: "./pikachu-spritesheet.png",
-  },
 ];
 
 module.exports = {

@@ -4,3 +4,4 @@ dist
 song-directory.txt
 GifToTheBeatDataProvider.exe
 app/images/*.png
+!app/images/catjam-spritesheet.png
