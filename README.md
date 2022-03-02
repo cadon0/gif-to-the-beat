@@ -26,7 +26,7 @@ For other osu! stream overlays you may be interested in their [StreamCompanion](
 
 # Requirements:
 
-- [Node.js](https://nodejs.org/en/download/) must be installed
+- [Node.js](https://nodejs.org/en/download/) must be installed. Latest LTS recommended.
 
 # Settings
 

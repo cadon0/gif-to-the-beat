@@ -36,8 +36,8 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.13",
     "prettier": "^2.1.1",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2"
   },
   "husky": {
     "hooks": {
