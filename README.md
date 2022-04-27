@@ -76,7 +76,7 @@ e.g. the two samples would be `http://localhost:727/catjam` and `http://localhos
 
 Please check the common issues below, or [open an issue](https://github.com/cadon0/gif-to-the-beat/issues/new)
 
-- The `.exe` file may need to be updated, check for the latest one [here](https://github.com/cadon0/ProcessMemoryDataFinder/releases)
+- The `.exe` file may need to be updated, check the [downloads page](https://github.com/cadon0/ProcessMemoryDataFinder/releases). The main symptom is strange characters in an error [like this](https://github.com/cadon0/gif-to-the-beat/issues/39).
 
 - > The application to execute does not exist: 'C:\Users\<name>\AppData\Local\Temp.net\GifToTheBeatDataProvider\xvqwwjrg.y50\GifToTheBeatDataProvider.dll'.`
 
