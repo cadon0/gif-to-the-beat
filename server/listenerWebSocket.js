@@ -24,7 +24,7 @@ function runListenerWebSocket() {
   if (!songsDirectory) songsDirectory = getSongsDirectory();
 
   const ws = new WebSocket(
-    `ws://localhost:${osuDataFeedPort}/GifToTheBeatOsuDataFeed`
+    `ws://127.0.0.1:${osuDataFeedPort}/GifToTheBeatOsuDataFeed`
   );
 
   ws.onopen = () => {
