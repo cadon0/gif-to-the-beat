@@ -1,6 +1,6 @@
 {
   "name": "gif-to-the-beat",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Gif speeder-upper. Or slower-downer... A \"plugin\" for OBS.",
   "main": "main.js",
   "scripts": {

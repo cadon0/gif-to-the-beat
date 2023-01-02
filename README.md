@@ -39,7 +39,7 @@ If in doubt it can always be opened and edited with Nodepad
 
 #### Short version:
 
-- Download [this .zip file](https://github.com/cadon0/gif-to-the-beat/releases/download/v1.0.1/gif-to-the-beat.zip). Extract it anywhere
+- Download [the latest .zip file](https://github.com/cadon0/gif-to-the-beat/releases). Extract it anywhere
 - Open the folder and double-click `start.bat`
   - You will be asked to enter the osu! "Songs" folder if running for the first time
 - Add a "Browser" source in OBS with URL `http://localhost:727/catjam` and `width`/`height` 112
